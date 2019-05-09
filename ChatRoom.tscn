@@ -1,0 +1,302 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://ChatRoom.gd" type="Script" id=1]
+[ext_resource path="res://fonts/courier new/bolditalics.tres" type="DynamicFont" id=2]
+[ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=3]
+[ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=4]
+[ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=5]
+[ext_resource path="res://res/sprites/backgrounds/test/cit_2b.bmp" type="Texture" id=6]
+[ext_resource path="res://icon.png" type="Texture" id=7]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.121569, 0.145098, 0.192157, 1 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0.168627, 0.207843, 0.286275, 1 )
+
+[sub_resource type="StyleBoxFlat" id=2]
+bg_color = Color( 0.0196078, 0.101961, 0.176471, 0.588235 )
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color( 0, 0, 0, 1 )
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id=3]
+bg_color = Color( 0.309804, 0.458824, 0.482353, 0.847059 )
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color( 0.592157, 0.592157, 0.592157, 1 )
+border_blend = true
+
+[node name="ChatRoom" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MainWindow" type="VSplitContainer" parent="PanelContainer"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 761.0
+
+[node name="HSplitContainer" type="HSplitContainer" parent="PanelContainer/MainWindow"]
+margin_right = 1010.0
+margin_bottom = 530.0
+
+[node name="Info" type="TabContainer" parent="PanelContainer/MainWindow/HSplitContainer"]
+margin_right = 336.0
+margin_bottom = 530.0
+rect_min_size = Vector2( 230, 0 )
+size_flags_horizontal = 3
+custom_styles/panel = SubResource( 1 )
+tab_align = 0
+drag_to_rearrange_enabled = true
+
+[node name="Login" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/Info"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 29.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="JoinBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login"]
+editor/display_folded = true
+margin_right = 326.0
+margin_bottom = 24.0
+
+[node name="JoinButton" type="Button" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login/JoinBox"]
+margin_right = 107.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Join"
+
+[node name="IPEnter" type="LineEdit" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login/JoinBox"]
+margin_left = 111.0
+margin_right = 326.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+text = "127.0.0.1"
+
+[node name="NameBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login"]
+editor/display_folded = true
+margin_top = 28.0
+margin_right = 326.0
+margin_bottom = 52.0
+
+[node name="JoinButton" type="Label" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login/NameBox"]
+margin_top = 5.0
+margin_right = 107.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Name:"
+align = 1
+
+[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login/NameBox"]
+margin_left = 111.0
+margin_right = 326.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+max_length = 24
+placeholder_text = "Your Name"
+
+[node name="HostButton" type="Button" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login"]
+margin_top = 56.0
+margin_right = 326.0
+margin_bottom = 76.0
+text = "Host"
+
+[node name="LeaveButton" type="Button" parent="PanelContainer/MainWindow/HSplitContainer/Info/Login"]
+margin_top = 80.0
+margin_right = 326.0
+margin_bottom = 100.0
+text = "Leave"
+
+[node name="Logs" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/Info"]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 29.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/HSplitContainer/Info/Logs"]
+margin_right = 340.0
+margin_bottom = 720.0
+focus_mode = 2
+size_flags_vertical = 3
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/bold_font = ExtResource( 4 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+text = "
+"
+scroll_following = true
+selection_enabled = true
+
+[node name="OOC" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/Info"]
+editor/display_folded = true
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 29.0
+margin_right = -5.0
+margin_bottom = -5.0
+
+[node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/HSplitContainer/Info/OOC"]
+margin_right = 374.0
+margin_bottom = 418.0
+focus_mode = 2
+size_flags_vertical = 3
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/bold_font = ExtResource( 4 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+text = "
+"
+scroll_following = true
+selection_enabled = true
+
+[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplitContainer/Info/OOC"]
+margin_top = 422.0
+margin_right = 374.0
+margin_bottom = 446.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="View" type="TabContainer" parent="PanelContainer/MainWindow/HSplitContainer"]
+margin_left = 348.0
+margin_right = 1010.0
+margin_bottom = 530.0
+
+[node name="IC" type="PanelContainer" parent="PanelContainer/MainWindow/HSplitContainer/View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 32.0
+margin_right = -4.0
+margin_bottom = -4.0
+
+[node name="View" type="ViewportContainer" parent="PanelContainer/MainWindow/HSplitContainer/View/IC"]
+editor/display_folded = true
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 647.0
+margin_bottom = 487.0
+rect_min_size = Vector2( 640, 480 )
+rect_clip_content = true
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Viewport" type="Viewport" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/View"]
+editor/display_folded = true
+size = Vector2( 640, 480 )
+handle_input_locally = false
+usage = 0
+render_target_update_mode = 3
+
+[node name="Node2D" type="Node2D" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/View/Viewport"]
+
+[node name="bg" type="Sprite" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/View/Viewport/Node2D"]
+texture = ExtResource( 6 )
+centered = false
+
+[node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/View/IC"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 647.0
+margin_bottom = 487.0
+custom_constants/separation = 0
+alignment = 2
+
+[node name="Box" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say"]
+margin_top = 312.0
+margin_right = 640.0
+margin_bottom = 450.0
+custom_constants/separation = 0
+
+[node name="Name" type="PanelContainer" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box"]
+editor/display_folded = true
+margin_right = 60.0
+margin_bottom = 28.0
+rect_min_size = Vector2( 60, 28 )
+size_flags_horizontal = 0
+custom_styles/panel = SubResource( 2 )
+
+[node name="Text" type="Label" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box/Name"]
+margin_left = 5.0
+margin_top = 7.0
+margin_right = 55.0
+margin_bottom = 21.0
+
+[node name="Display" type="Panel" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box"]
+editor/display_folded = true
+margin_top = 28.0
+margin_right = 640.0
+margin_bottom = 138.0
+rect_min_size = Vector2( 0, 110 )
+custom_styles/panel = SubResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box/Display"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 15.0
+margin_top = 15.0
+margin_right = -15.0
+margin_bottom = -25.0
+focus_mode = 2
+custom_fonts/bold_italics_font = ExtResource( 2 )
+custom_fonts/italics_font = ExtResource( 3 )
+custom_fonts/bold_font = ExtResource( 4 )
+custom_fonts/normal_font = ExtResource( 5 )
+bbcode_enabled = true
+scroll_following = true
+selection_enabled = true
+
+[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/Say"]
+margin_top = 450.0
+margin_right = 640.0
+margin_bottom = 480.0
+rect_min_size = Vector2( 0, 30 )
+size_flags_vertical = 8
+custom_styles/normal = SubResource( 3 )
+
+[node name="ItemList" type="ItemList" parent="PanelContainer/MainWindow"]
+margin_top = 542.0
+margin_right = 1010.0
+margin_bottom = 754.0
+items = [ "Emote", ExtResource( 7 ), false, "Item 1", ExtResource( 7 ), false, "Item 2", ExtResource( 7 ), false, "Item 3", ExtResource( 7 ), false, "Item 4", ExtResource( 7 ), false, "Item 5", ExtResource( 7 ), false, "Item 6", ExtResource( 7 ), false, "Item 7", ExtResource( 7 ), false, "Item 8", ExtResource( 7 ), false, "Item 9", ExtResource( 7 ), false, "Item 10", ExtResource( 7 ), false, "Item 11", ExtResource( 7 ), false, "Item 12", ExtResource( 7 ), false, "Item 13", ExtResource( 7 ), false, "Item 14", ExtResource( 7 ), false ]
+max_columns = 16
+same_column_width = true
+icon_mode = 0
+fixed_icon_size = Vector2( 64, 64 )
+
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplitContainer/Info/Login/JoinBox/JoinButton" to="." method="_on_JoinButton_button_up"]
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplitContainer/Info/Login/HostButton" to="." method="_on_HostButton_button_up"]
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplitContainer/Info/Login/LeaveButton" to="." method="_on_LeaveButton_button_up"]
+[connection signal="text_entered" from="PanelContainer/MainWindow/HSplitContainer/Info/OOC/Input" to="." method="_on_ChatInput_text_entered"]
+[connection signal="text_entered" from="PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Input" to="." method="_on_SayInput_text_entered"]
