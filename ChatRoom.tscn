@@ -5,7 +5,7 @@
 [ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=3]
 [ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=4]
 [ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=5]
-[ext_resource path="res://res/sprites/backgrounds/test/cit_2b.bmp" type="Texture" id=6]
+[ext_resource path="res://res/sprites/backgrounds/test/110602_b.jpg" type="Texture" id=6]
 [ext_resource path="res://icon.png" type="Texture" id=7]
 
 [sub_resource type="StyleBoxFlat" id=1]
@@ -199,7 +199,6 @@ margin_right = -4.0
 margin_bottom = -4.0
 
 [node name="View" type="ViewportContainer" parent="PanelContainer/MainWindow/HSplitContainer/View/IC"]
-editor/display_folded = true
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 647.0
@@ -210,7 +209,6 @@ size_flags_horizontal = 4
 size_flags_vertical = 0
 
 [node name="Viewport" type="Viewport" parent="PanelContainer/MainWindow/HSplitContainer/View/IC/View"]
-editor/display_folded = true
 size = Vector2( 640, 480 )
 handle_input_locally = false
 usage = 0
