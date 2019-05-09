@@ -3,17 +3,17 @@ extends Control
 const PORT = 25565
 const MAX_USERS = 16 #not including host
 
-onready var chat_display = $PanelContainer/MainWindow/HSplitContainer/Info/OOC/Text
-onready var chat_input = $PanelContainer/MainWindow/HSplitContainer/Info/OOC/Input
+onready var chat_display = $PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC/Text
+onready var chat_input = $PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC/Input
 
-onready var say_box = $PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box
-onready var say_display = $PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box/Display/Text
-onready var say_name = $PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Box/Name/Text
-onready var say_input = $PanelContainer/MainWindow/HSplitContainer/View/IC/Say/Input
+onready var say_box = $PanelContainer/MainWindow/HSplit/View/IC/Say/Box
+onready var say_display = $PanelContainer/MainWindow/HSplit/View/IC/Say/Box/Display/Text
+onready var say_name = $PanelContainer/MainWindow/HSplit/View/IC/Say/Box/Name/Text
+onready var say_input = $PanelContainer/MainWindow/HSplit/View/IC/Say/Input
 
-onready var say_logs = $PanelContainer/MainWindow/HSplitContainer/Info/Logs/Text
+onready var say_logs = $PanelContainer/MainWindow/HSplit/VSplit/Info/Logs/Text
 
-onready var login = $PanelContainer/MainWindow/HSplitContainer/Info/Login
+onready var login = $PanelContainer/MainWindow/HSplit/VSplit/Info/Login
 
 var my_name = ""
 var clients = {}
