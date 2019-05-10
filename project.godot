@@ -19,6 +19,10 @@ config/name="Godot AO"
 run/main_scene="res://ChatRoom.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+text_parser="*res://src/globals/text_parser.gd"
+
 [display]
 
 window/size/height=768
