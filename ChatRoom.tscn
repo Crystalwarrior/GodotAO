@@ -237,7 +237,6 @@ margin_bottom = 754.0
 size_flags_horizontal = 3
 
 [node name="Info3" type="TabContainer" parent="PanelContainer/MainWindow/HSplit/IC"]
-editor/display_folded = true
 margin_right = 664.0
 margin_bottom = 528.0
 size_flags_horizontal = 3
@@ -248,7 +247,6 @@ drag_to_rearrange_enabled = true
 script = ExtResource( 3 )
 
 [node name="IC" type="PanelContainer" parent="PanelContainer/MainWindow/HSplit/IC/Info3"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -371,6 +369,7 @@ texture = ExtResource( 13 )
 centered = false
 
 [node name="Say" type="VBoxContainer" parent="Viewport/Node2D"]
+editor/display_folded = true
 visible = false
 margin_right = 640.0
 margin_bottom = 480.0

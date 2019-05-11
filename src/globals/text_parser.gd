@@ -35,8 +35,10 @@ func parse_markup(msg: String) -> String:
 	var underline = false
 
 	msg = msg.strip_edges()
-
-	for symbol in msg:
+	var i = 0
+	var symbol = ""
+	while i < msg.length():
+		symbol = msg[i]
 		if token.begins_with("\\") or symbol == "\\":
 			token += symbol
 			if token.length() == 2 and colors.has(token):
@@ -48,45 +50,81 @@ func parse_markup(msg: String) -> String:
 			elif token.length() >= 2:
 				parsed += token.substr(1, token.length())
 				token = ""
-		elif token.begins_with("*") or symbol == "*":
-			if symbol == "*":
+		if token.begins_with("*") or symbol == "*":
+			if symbol == "*" and token.length() < 3 and (token.empty() or token.begins_with("*")):
 				token += "*"
-			else:
-				print(token)
+				i += 1
+				continue
+			elif token.begins_with("*"):
+				print(token + " | " + symbol, italics, underline, bold)
 				if not italics and token.length() == 1:
 					italics = true
 					parsed += "[i]"
 				elif not bold and token.length() == 2:
 					bold = true
 					parsed += "[b]"
+				elif token.length() == 3:
+					if not italics and not bold:
+						italics = true
+						bold = true
+						parsed += "[i][b]"
+					elif italics and bold:
+						italics = false
+						bold = false
+						parsed += "[/b][/i]"
 				elif bold and token.length() == 2:
 					bold = false
 					parsed += "[/b]"
 				elif italics and token.length() == 1:
-					italics = true
+					italics = false
 					parsed += "[/i]"
 				token = ""
-				parsed += symbol
-		elif token.begins_with("_") or symbol == "_":
-			if symbol == "_":
+				continue
+		if token.begins_with("_") or symbol == "_":
+			if symbol == "_" and token.length() < 3 and (token.empty() or token.begins_with("_")):
 				token += "_"
-			else:
+				i += 1
+				continue
+			elif token.begins_with("_"):
+				print(token + " | " + symbol, italics, underline, bold)
 				if not italics and token.length() == 1:
 					italics = true
 					parsed += "[i]"
 				elif not underline and token.length() == 2:
 					underline = true
 					parsed += "[u]"
+				elif token.length() == 3:
+					if not italics and not underline:
+						italics = true
+						underline = true
+						parsed += "[i][u]"
+					elif italics and underline:
+						italics = false
+						underline = false
+						parsed += "[/u][/i]"
 				elif underline and token.length() == 2:
 					underline = false
 					parsed += "[/u]"
 				elif italics and token.length() == 1:
-					italics = true
+					italics = false
 					parsed += "[/i]"
 				token = ""
-				parsed += symbol
-		else:
-			parsed += symbol
+				continue
+#
+#		if bold:
+#			parsed += "[b]"
+#		if italics:
+#			parsed += "[i]"
+#		if underline:
+#			parsed += "[u]"
+#		if not underline:
+#			parsed += "[/u]"
+#		if not italics:
+#			parsed += "[/i]"
+#		if not bold:
+#			parsed += "[/b]"
+		parsed += symbol
+		i += 1
 	print(parsed)
 	if not color.empty():
 		parsed += "[/color]"
