@@ -25,15 +25,14 @@ const colors = {
 	"\\B": "black",
 }
 
-
 func parse_markup(msg: String) -> String:
 	var token: String = ""
 	var parsed: String = ""
 	var color: String = ""
-	
-	var bold: bool = false
-	var italics: bool = false
-	var underline: bool = false
+
+	var bold = false
+	var italics = false
+	var underline = false
 
 	msg = msg.strip_edges()
 
@@ -49,11 +48,49 @@ func parse_markup(msg: String) -> String:
 			elif token.length() >= 2:
 				parsed += token.substr(1, token.length())
 				token = ""
-#		elif not color.empty():
-#
+		elif token.begins_with("*") or symbol == "*":
+			if symbol == "*":
+				token += "*"
+			else:
+				if token.length() == 1 or token.length() == 3: #bold
+					if not bold:
+						bold = true
+						parsed += "[b]"
+					else:
+						bold = false
+						parsed += "[/b]"
+				if token.length() == 1 or token.length() == 3: #italics
+					if not italics:
+						italics = true
+						parsed += "[i]"
+					else:
+						italics = false
+						parsed += "[/i]"
+				token = ""
+				parsed += symbol
+		elif token.begins_with("_") or symbol == "_":
+			if symbol == "_":
+				token += "_"
+			else:
+				if token.length() == 2 or token.length() == 3: #underline
+					if not underline:
+						underline = true
+						parsed += "[u]"
+					else:
+						underline = false
+						parsed += "[/u]"
+				if token.length() == 1 or token.length() == 3: #italics
+					if not italics:
+						italics = true
+						parsed += "[i]"
+					else:
+						italics = false
+						parsed += "[/i]"
+				token = ""
+				parsed += symbol
 		else:
 			parsed += symbol
-
+	print(parsed)
 	if not color.empty():
 		parsed += "[/color]"
 	return parsed
