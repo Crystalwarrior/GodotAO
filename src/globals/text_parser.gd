@@ -52,40 +52,37 @@ func parse_markup(msg: String) -> String:
 			if symbol == "*":
 				token += "*"
 			else:
-				if token.length() == 1 or token.length() == 3: #bold
-					if not bold:
-						bold = true
-						parsed += "[b]"
-					else:
-						bold = false
-						parsed += "[/b]"
-				if token.length() == 1 or token.length() == 3: #italics
-					if not italics:
-						italics = true
-						parsed += "[i]"
-					else:
-						italics = false
-						parsed += "[/i]"
+				print(token)
+				if not italics and token.length() == 1:
+					italics = true
+					parsed += "[i]"
+				elif not bold and token.length() == 2:
+					bold = true
+					parsed += "[b]"
+				elif bold and token.length() == 2:
+					bold = false
+					parsed += "[/b]"
+				elif italics and token.length() == 1:
+					italics = true
+					parsed += "[/i]"
 				token = ""
 				parsed += symbol
 		elif token.begins_with("_") or symbol == "_":
 			if symbol == "_":
 				token += "_"
 			else:
-				if token.length() == 2 or token.length() == 3: #underline
-					if not underline:
-						underline = true
-						parsed += "[u]"
-					else:
-						underline = false
-						parsed += "[/u]"
-				if token.length() == 1 or token.length() == 3: #italics
-					if not italics:
-						italics = true
-						parsed += "[i]"
-					else:
-						italics = false
-						parsed += "[/i]"
+				if not italics and token.length() == 1:
+					italics = true
+					parsed += "[i]"
+				elif not underline and token.length() == 2:
+					underline = true
+					parsed += "[u]"
+				elif underline and token.length() == 2:
+					underline = false
+					parsed += "[/u]"
+				elif italics and token.length() == 1:
+					italics = true
+					parsed += "[/i]"
 				token = ""
 				parsed += symbol
 		else:
