@@ -13,6 +13,7 @@ signal ic_message(msg)
 signal ic_logs(msg)
 signal login()
 signal logout()
+signal clients_changed(array)
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "enter_room")
@@ -30,13 +31,16 @@ sync func user_auth(id, name):
 		return
 	clients[id] = name
 	rpc("receive_client_list", clients)
+	emit_signal("clients_changed", clients.values())
 
-remote func receive_client_list(array):
-	clients = array
+remote func receive_client_list(dict):
+	clients = dict
+	emit_signal("clients_changed", clients.values())
 
 func user_exited(id):
 	emit_signal("ooc_message", "[b]" + clients[id] + " left the room[/b]")
-	clients.erase(id)
+	if clients.has(id):
+		clients.erase(id)
 
 func host_room():
 	var host = NetworkedMultiplayerENet.new()

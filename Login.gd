@@ -6,6 +6,7 @@ onready var host_button: Control = $HostButton as Control
 onready var leave_button: Control = $LeaveButton as Control
 onready var ip_enter: LineEdit = $JoinBox/Input as LineEdit
 onready var name_enter: LineEdit = $NameBox/Input as LineEdit
+onready var playerlist: ItemList = $PlayerList as ItemList
 
 signal change_ip(msg)
 signal change_name(msg)
@@ -44,3 +45,8 @@ func _on_Name_text_changed(new_text: String) -> void:
 	if new_text == "":
 		return
 	emit_signal("change_name", new_text)
+
+func _on_Main_clients_changed(array):
+	playerlist.clear()
+	for client in array:
+		playerlist.add_item(client)

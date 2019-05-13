@@ -10,14 +10,12 @@
 [ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=8]
 [ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=9]
 [ext_resource path="res://OOC.gd" type="Script" id=10]
-[ext_resource path="res://Say.gd" type="Script" id=11]
-[ext_resource path="res://icon.png" type="Texture" id=12]
-[ext_resource path="res://res/sprites/backgrounds/test/110602_b.jpg" type="Texture" id=13]
+[ext_resource path="res://res/sprites/backgrounds/test/110602_b.jpg" type="Texture" id=11]
+[ext_resource path="res://res/sprites/characters/Female Student 1/female student 1 - happy.png" type="Texture" id=12]
+[ext_resource path="res://Say.gd" type="Script" id=13]
+[ext_resource path="res://icon.png" type="Texture" id=14]
 
-[sub_resource type="ViewportTexture" id=1]
-viewport_path = NodePath("Viewport")
-
-[sub_resource type="StyleBoxFlat" id=2]
+[sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0196078, 0.101961, 0.176471, 0.588235 )
 border_width_left = 5
 border_width_top = 5
@@ -26,7 +24,7 @@ border_width_bottom = 5
 border_color = Color( 0, 0, 0, 1 )
 border_blend = true
 
-[sub_resource type="StyleBoxFlat" id=3]
+[sub_resource type="StyleBoxFlat" id=2]
 bg_color = Color( 0.309804, 0.458824, 0.482353, 0.847059 )
 border_width_left = 3
 border_width_top = 3
@@ -63,7 +61,6 @@ margin_bottom = 754.0
 size_flags_horizontal = 3
 
 [node name="Info" type="TabContainer" parent="PanelContainer/MainWindow/HSplit/VSplit"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 371.0
 rect_min_size = Vector2( 230, 0 )
@@ -74,8 +71,7 @@ tab_align = 0
 drag_to_rearrange_enabled = true
 script = ExtResource( 3 )
 
-[node name="Login" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info"]
-editor/display_folded = true
+[node name="Info" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -84,17 +80,31 @@ margin_right = -5.0
 margin_bottom = -5.0
 script = ExtResource( 4 )
 
-[node name="JoinBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login"]
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
 margin_right = 324.0
-margin_bottom = 24.0
+margin_bottom = 14.0
+text = "Players:"
+align = 1
 
-[node name="JoinButton2" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/JoinBox"]
+[node name="PlayerList" type="ItemList" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
+margin_top = 18.0
+margin_right = 324.0
+margin_bottom = 27.0
+auto_height = true
+
+[node name="JoinBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
+editor/display_folded = true
+margin_top = 31.0
+margin_right = 324.0
+margin_bottom = 55.0
+
+[node name="JoinButton2" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/JoinBox"]
 margin_right = 106.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 text = "Join"
 
-[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/JoinBox"]
+[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/JoinBox"]
 margin_left = 110.0
 margin_right = 324.0
 margin_bottom = 24.0
@@ -102,12 +112,13 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "127.0.0.1"
 
-[node name="NameBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login"]
-margin_top = 28.0
+[node name="NameBox" type="HBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
+editor/display_folded = true
+margin_top = 59.0
 margin_right = 324.0
-margin_bottom = 52.0
+margin_bottom = 83.0
 
-[node name="Label" type="Label" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/NameBox"]
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/NameBox"]
 margin_top = 5.0
 margin_right = 106.0
 margin_bottom = 19.0
@@ -115,7 +126,7 @@ size_flags_horizontal = 3
 text = "Name:"
 align = 1
 
-[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/NameBox"]
+[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/NameBox"]
 margin_left = 110.0
 margin_right = 324.0
 margin_bottom = 24.0
@@ -124,16 +135,16 @@ size_flags_stretch_ratio = 2.0
 max_length = 24
 placeholder_text = "Your Name"
 
-[node name="HostButton" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login"]
-margin_top = 56.0
+[node name="HostButton" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
+margin_top = 87.0
 margin_right = 324.0
-margin_bottom = 76.0
+margin_bottom = 107.0
 text = "Host"
 
-[node name="LeaveButton" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Login"]
-margin_top = 80.0
+[node name="LeaveButton" type="Button" parent="PanelContainer/MainWindow/HSplit/VSplit/Info/Info"]
+margin_top = 111.0
 margin_right = 324.0
-margin_bottom = 100.0
+margin_bottom = 131.0
 text = "Leave"
 
 [node name="Logs" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/VSplit/Info"]
@@ -255,39 +266,72 @@ margin_right = -5.0
 margin_bottom = -5.0
 size_flags_horizontal = 3
 
-[node name="Sprite" type="TextureRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC"]
-margin_left = 7.0
-margin_top = 7.0
-margin_right = 647.0
-margin_bottom = 487.0
-texture = SubResource( 1 )
-stretch_mode = 6
-
-[node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC"]
-editor/display_folded = true
+[node name="View" type="ReferenceRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC"]
 margin_left = 7.0
 margin_top = 7.0
 margin_right = 647.0
 margin_bottom = 487.0
 rect_min_size = Vector2( 640, 480 )
-size_flags_horizontal = 4
+rect_clip_content = true
+size_flags_horizontal = 3
+size_flags_vertical = 3
+border_color = Color( 0.054902, 1, 0, 1 )
+
+[node name="bg" type="TextureRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 11 )
+expand = true
+stretch_mode = 7
+
+[node name="character" type="TextureRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -389.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 5
+
+[node name="character2" type="TextureRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 190.0
+margin_right = -199.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 5
+
+[node name="character3" type="TextureRect" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/View"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 390.0
+margin_right = 1.0
+texture = ExtResource( 12 )
+expand = true
+stretch_mode = 5
+
+[node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC"]
+margin_left = 7.0
+margin_top = 319.0
+margin_right = 647.0
+margin_bottom = 487.0
 size_flags_vertical = 8
 custom_constants/separation = 0
 alignment = 2
-script = ExtResource( 11 )
+script = ExtResource( 13 )
 
 [node name="Box" type="VBoxContainer" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say"]
-margin_top = 312.0
 margin_right = 640.0
-margin_bottom = 450.0
+margin_bottom = 138.0
 custom_constants/separation = 0
 
 [node name="Name" type="PanelContainer" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say/Box"]
+editor/display_folded = true
 margin_right = 60.0
 margin_bottom = 28.0
 rect_min_size = Vector2( 60, 28 )
 size_flags_horizontal = 0
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 
 [node name="Text" type="Label" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say/Box/Name"]
 margin_left = 5.0
@@ -300,7 +344,7 @@ margin_top = 28.0
 margin_right = 640.0
 margin_bottom = 138.0
 rect_min_size = Vector2( 0, 110 )
-custom_styles/panel = SubResource( 2 )
+custom_styles/panel = SubResource( 1 )
 __meta__ = {
 "_edit_group_": true
 }
@@ -322,12 +366,12 @@ scroll_following = true
 selection_enabled = true
 
 [node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say"]
-margin_top = 450.0
+margin_top = 138.0
 margin_right = 640.0
-margin_bottom = 480.0
+margin_bottom = 168.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_vertical = 8
-custom_styles/normal = SubResource( 3 )
+custom_styles/normal = SubResource( 2 )
 
 [node name="Info4" type="TabContainer" parent="PanelContainer/MainWindow/HSplit/IC"]
 editor/display_folded = true
@@ -349,108 +393,29 @@ margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
 size_flags_vertical = 3
-items = [ "Emote", ExtResource( 12 ), false, "Item 1", ExtResource( 12 ), false, "Item 2", ExtResource( 12 ), false, "Item 3", ExtResource( 12 ), false, "Item 4", ExtResource( 12 ), false, "Item 5", ExtResource( 12 ), false, "Item 6", ExtResource( 12 ), false, "Item 7", ExtResource( 12 ), false, "Item 8", ExtResource( 12 ), false, "Item 9", ExtResource( 12 ), false, "Item 10", ExtResource( 12 ), false, "Item 11", ExtResource( 12 ), false, "Item 12", ExtResource( 12 ), false, "Item 13", ExtResource( 12 ), false, "Item 14", ExtResource( 12 ), false ]
+items = [ "Emote", ExtResource( 14 ), false, "Item 1", ExtResource( 14 ), false, "Item 2", ExtResource( 14 ), false, "Item 3", ExtResource( 14 ), false, "Item 4", ExtResource( 14 ), false, "Item 5", ExtResource( 14 ), false, "Item 6", ExtResource( 14 ), false, "Item 7", ExtResource( 14 ), false, "Item 8", ExtResource( 14 ), false, "Item 9", ExtResource( 14 ), false, "Item 10", ExtResource( 14 ), false, "Item 11", ExtResource( 14 ), false, "Item 12", ExtResource( 14 ), false, "Item 13", ExtResource( 14 ), false, "Item 14", ExtResource( 14 ), false ]
 max_columns = 16
 same_column_width = true
 icon_mode = 0
 fixed_icon_size = Vector2( 64, 64 )
 
-[node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 640, 480 )
-handle_input_locally = false
-usage = 0
-render_target_v_flip = true
-render_target_update_mode = 3
-
-[node name="Node2D" type="Node2D" parent="Viewport"]
-
-[node name="bg" type="Sprite" parent="Viewport/Node2D"]
-texture = ExtResource( 13 )
-centered = false
-
-[node name="Say" type="VBoxContainer" parent="Viewport/Node2D"]
-editor/display_folded = true
-visible = false
-margin_right = 640.0
-margin_bottom = 480.0
-rect_min_size = Vector2( 640, 480 )
-custom_constants/separation = 0
-alignment = 2
-script = ExtResource( 11 )
-
-[node name="Box" type="VBoxContainer" parent="Viewport/Node2D/Say"]
-margin_top = 312.0
-margin_right = 640.0
-margin_bottom = 450.0
-custom_constants/separation = 0
-
-[node name="Name" type="PanelContainer" parent="Viewport/Node2D/Say/Box"]
-editor/display_folded = true
-margin_right = 60.0
-margin_bottom = 28.0
-rect_min_size = Vector2( 60, 28 )
-size_flags_horizontal = 0
-custom_styles/panel = SubResource( 2 )
-
-[node name="Text" type="Label" parent="Viewport/Node2D/Say/Box/Name"]
-margin_left = 5.0
-margin_top = 7.0
-margin_right = 55.0
-margin_bottom = 21.0
-
-[node name="Display" type="Panel" parent="Viewport/Node2D/Say/Box"]
-editor/display_folded = true
-margin_top = 28.0
-margin_right = 640.0
-margin_bottom = 138.0
-rect_min_size = Vector2( 0, 110 )
-custom_styles/panel = SubResource( 2 )
-__meta__ = {
-"_edit_group_": true
-}
-
-[node name="Text" type="RichTextLabel" parent="Viewport/Node2D/Say/Box/Display"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 15.0
-margin_top = 15.0
-margin_right = -15.0
-margin_bottom = -25.0
-focus_mode = 2
-custom_fonts/bold_italics_font = ExtResource( 6 )
-custom_fonts/italics_font = ExtResource( 7 )
-custom_fonts/bold_font = ExtResource( 8 )
-custom_fonts/normal_font = ExtResource( 9 )
-bbcode_enabled = true
-scroll_following = true
-selection_enabled = true
-
-[node name="Input" type="LineEdit" parent="Viewport/Node2D/Say"]
-margin_top = 450.0
-margin_right = 640.0
-margin_bottom = 480.0
-rect_min_size = Vector2( 0, 30 )
-size_flags_vertical = 8
-custom_styles/normal = SubResource( 3 )
-
+[connection signal="clients_changed" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_Main_clients_changed"]
 [connection signal="ic_logs" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Logs" method="_on_ic_logs"]
 [connection signal="ic_message" from="." to="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say" method="_on_ic_message"]
 [connection signal="ic_name" from="." to="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say" method="_on_ic_name"]
-[connection signal="login" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_login"]
-[connection signal="logout" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_logout"]
+[connection signal="login" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_login"]
+[connection signal="logout" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_logout"]
 [connection signal="ooc_message" from="." to="PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC" method="_on_ooc_message"]
-[connection signal="change_ip" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" to="." method="_on_Login_change_ip"]
-[connection signal="change_name" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" to="." method="_on_Login_change_name"]
-[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/JoinBox/JoinButton2" to="." method="_on_JoinButton_button_up"]
-[connection signal="text_changed" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/JoinBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_IP_text_changed"]
-[connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/JoinBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_IP_text_entered"]
-[connection signal="text_changed" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/NameBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_Name_text_changed"]
-[connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/NameBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Login" method="_on_Name_text_entered"]
-[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/HostButton" to="." method="_on_HostButton_button_up"]
-[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Login/LeaveButton" to="." method="_on_LeaveButton_button_up"]
+[connection signal="change_ip" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" to="." method="_on_Login_change_ip"]
+[connection signal="change_name" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" to="." method="_on_Login_change_name"]
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/JoinBox/JoinButton2" to="." method="_on_JoinButton_button_up"]
+[connection signal="text_changed" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/JoinBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_IP_text_changed"]
+[connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/JoinBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_IP_text_entered"]
+[connection signal="text_changed" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/NameBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_Name_text_changed"]
+[connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/NameBox/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info/Info" method="_on_Name_text_entered"]
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/HostButton" to="." method="_on_HostButton_button_up"]
+[connection signal="button_up" from="PanelContainer/MainWindow/HSplit/VSplit/Info/Info/LeaveButton" to="." method="_on_LeaveButton_button_up"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC" to="." method="send_ooc_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC/Input" to="PanelContainer/MainWindow/HSplit/VSplit/Info2/OOC" method="_on_Input_text_entered"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say" to="." method="send_ic_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say/Input" to="PanelContainer/MainWindow/HSplit/IC/Info3/IC/Say" method="_on_Input_text_entered"]
-[connection signal="message_sent" from="Viewport/Node2D/Say" to="." method="send_ic_message"]
-[connection signal="text_entered" from="Viewport/Node2D/Say/Input" to="Viewport/Node2D/Say" method="_on_Input_text_entered"]

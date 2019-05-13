@@ -26,46 +26,55 @@ const colors = {
 	"\\B": "black",
 }
 
-#You may be asking: "What the FUCK is this huge blob (?!.*\[\/?\w*\])[^*]+?) !?
-#The answer is simple - we don't want to match bbcode to not cause any problems.
-const regex = {
-	#strip BBCode:
-	"bbcode": {"regex": "\\[\\/?\\w*\\]", "replace": ""},
-
-	"bold": {"regex": "(\\*{2})((?!.*\\[\\/?\\w*\\])[^*]+?)(\\1)", "replace": "[b]$2[/b]"},
-	"underline": {"regex": "(_{2})((?!.*\\[\\/?\\w*\\])[^_]+?)(\\1)", "replace": "[u]$2[/u]"},
-	"italics": {"regex": "(\\*|_)((?!.*\\[\\/?\\w*\\])[^*_]+?)(\\1)", "replace": "[i]$2[/i]"},
-	"strike": {"regex": "(~{2})((?!.*\\[\\/?\\w*\\])[^~]+?)(\\1)", "replace": "[s]$2[/s]"},
-
-	"color": {"regex": "(\\\\.[0-9]?)([^\\\\]+)", "replace": "$3"},
+const markup = {
+	"*": "i",
+	"_": "i",
+	"**": "b",
+	"__": "u",
+	"~~": "s"
 }
 
 func parse_markup(msg: String) -> String:
-	msg = msg.strip_edges()
-
 	var re = RegEx.new()
-	re.compile(regex["bbcode"]["regex"])
-	msg = re.sub(msg, regex["bbcode"]["replace"], true)
-
-	re.compile(regex["bold"]["regex"])
-	msg = re.sub(msg, regex["bold"]["replace"], true)
-
-	re.compile(regex["underline"]["regex"])
-	msg = re.sub(msg, regex["underline"]["replace"], true)
-
-	re.compile(regex["italics"]["regex"])
-	msg = re.sub(msg, regex["italics"]["replace"], true)
-
-	re.compile(regex["strike"]["regex"])
-	msg = re.sub(msg, regex["strike"]["replace"], true)
-	print(msg)
-	re.compile(regex["color"]["regex"])
-	var search = re.search_all(msg)
-	for re_match in search:
-		var color = re_match.get_string(1)
-		var text = re_match.get_string(2)
-		print(color + " " + text)
-		if color in colors:
-			msg = re.sub(msg, "[color=" + colors[color] + "]$2[/color]")
-		print(msg)
-	return msg
+	re.compile("\\[\\/?\\w*=?\\S*?\\]") #strip bbcode completely
+	msg = re.sub(msg, "", true)
+	
+	var parsed = ""
+	var token = "" #the token we detected
+	var tags = [] #a tag array
+	var i = 0
+	while i < msg.length():
+		var symbol = msg[i]
+		var wait = ""
+		if not tags.empty():
+			wait = tags.front()
+		print(wait)
+		print(str(i) + symbol + ": " + parsed + " | " + token)
+		if markup.has(token + symbol):
+			var tag = markup[token+symbol]
+			if i+1 < msg.length() and tag != wait:
+				token += symbol
+			else:
+				if wait == tag: #we were waiting to close this one
+					tags.pop_front()
+					parsed += "[/" + tag + "]"
+				elif not (tag in tags): #open that tag right up
+					tags.push_front(tag)
+					parsed += "[" + tag + "]"
+				token = ""
+			i += 1
+			continue
+		elif markup.has(token): #the symbol is alien to us now, it's probably not a token
+			var tag = markup[token]
+			if wait == tag: #we were waiting to close this one
+				tags.pop_front()
+				parsed += "[/" + tag + "]"
+			elif not (tag in tags): #open that tag right up
+				tags.push_front(tag)
+				parsed += "[" + tag + "]"
+			token = ""
+			continue
+		parsed += symbol
+		i += 1
+	print(tags)
+	return parsed
