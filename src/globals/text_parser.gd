@@ -3,8 +3,8 @@ extends Node
 const colors = {
 	"\\c0": "white",
 	"\\c1": "red",
-	"\\c2": "yellow",
-	"\\c3": "#ffa500", #orange
+	"\\c2": "#ffa500", #orange
+	"\\c3": "yellow",
 	"\\c4": "lime",
 	"\\c5": "#0088ff", #blue
 	"\\c6": "aqua",
@@ -19,7 +19,7 @@ const colors = {
 	"\\o": "#ffa500", #orange
 	"\\g": "lime",
 	"\\b": "#0088ff", #blue
-	"\\c": "aqua",
+	"\\a": "aqua",
 	"\\p": "#ff88ff", #purple
 	"\\s": "silver",
 	"\\G": "gray",

@@ -15,3 +15,6 @@ func _on_ic_message(msg: String) -> void:
 func _on_Input_text_entered(new_text):
 	emit_signal("message_sent", new_text)
 	input.text = ""
+
+func _on_emote_selected(index):
+	input.grab_focus()
