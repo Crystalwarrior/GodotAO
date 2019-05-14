@@ -13,5 +13,5 @@ func _on_ic_message(msg: String) -> void:
 	text.bbcode_text = msg
 
 func _on_Input_text_entered(new_text):
-	emit_signal("message_sent", text_parser.parse_markup(new_text))
+	emit_signal("message_sent", new_text)
 	input.text = ""

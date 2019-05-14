@@ -31,50 +31,89 @@ const markup = {
 	"_": "i",
 	"**": "b",
 	"__": "u",
-	"~~": "s"
+	"~~": "s",
+	"\\": "color",
+	"\\c": "color",
+	"\\C": "color",
 }
 
-func parse_markup(msg: String) -> String:
+func strip_bbcode(msg: String) -> String:
 	var re = RegEx.new()
 	re.compile("\\[\\/?\\w*=?\\S*?\\]") #strip bbcode completely
 	msg = re.sub(msg, "", true)
-	
+
+	return msg
+
+func parse_markup(msg: String) -> String:
+	msg = strip_bbcode(msg)
+
 	var parsed = ""
 	var token = "" #the token we detected
 	var tags = [] #a tag array
+	var color = ""
 	var i = 0
 	while i < msg.length():
 		var symbol = msg[i]
 		var wait = ""
 		if not tags.empty():
 			wait = tags.front()
-		print(wait)
-		print(str(i) + symbol + ": " + parsed + " | " + token)
+#		print(str(i) + symbol + ": " + parsed + " | " + token)
 		if markup.has(token + symbol):
 			var tag = markup[token+symbol]
 			if i+1 < msg.length() and tag != wait:
 				token += symbol
 			else:
+				if color != "":
+					parsed += "[/color]"
 				if wait == tag: #we were waiting to close this one
 					tags.pop_front()
 					parsed += "[/" + tag + "]"
 				elif not (tag in tags): #open that tag right up
 					tags.push_front(tag)
 					parsed += "[" + tag + "]"
+				if color != "":
+					parsed += "[color=" + color +"]"
 				token = ""
 			i += 1
 			continue
 		elif markup.has(token): #the symbol is alien to us now, it's probably not a token
 			var tag = markup[token]
-			if wait == tag: #we were waiting to close this one
-				tags.pop_front()
-				parsed += "[/" + tag + "]"
-			elif not (tag in tags): #open that tag right up
-				tags.push_front(tag)
-				parsed += "[" + tag + "]"
+			if tag == "color": #special shit
+				if color != "":
+					parsed += "[/" + tag + "]"
+				if colors.has(token+symbol):
+					var prevtags = []
+					if tag in tags: #oh shit we got a wait on the color let's close/reopen all previous nerds
+						for t in tags:
+							if t == "color":
+								break
+							parsed += "[/" + t + "]"
+							prevtags.push_back(t)
+#					tags.push_front(tag)
+					color = colors[token+symbol]
+					parsed += "[" + tag + "=" + color + "]"
+					for t in prevtags:
+						parsed += "[" + t + "]"
+					i += 1
+				else:
+					color = ""
+			else:
+				if color != "":
+					parsed += "[/color]"
+				if wait == tag: #we were waiting to close this one
+					tags.pop_front()
+					parsed += "[/" + tag + "]"
+				elif not (tag in tags): #open that tag right up
+					tags.push_front(tag)
+					parsed += "[" + tag + "]"
+				if color != "":
+					parsed += "[color=" + color +"]"
 			token = ""
 			continue
 		parsed += symbol
 		i += 1
-	print(tags)
+	if color != "":
+		parsed += "[/color]"
+	for tag in tags: #close lingering tags
+		parsed += "[/" + tag + "]"
 	return parsed

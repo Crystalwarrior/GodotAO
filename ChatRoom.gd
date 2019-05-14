@@ -38,8 +38,8 @@ remote func receive_client_list(dict):
 	emit_signal("clients_changed", clients.values())
 
 func user_exited(id):
-	emit_signal("ooc_message", "[b]" + clients[id] + " left the room[/b]")
 	if clients.has(id):
+		emit_signal("ooc_message", "[b]" + clients[id] + " left the room[/b]")
 		clients.erase(id)
 
 func host_room():
@@ -74,10 +74,11 @@ func send_ic_message(msg):
 	rpc("receive_ic_message", id, msg)
 
 sync func receive_ooc_message(id, msg):
-	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
+	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
 
 sync func receive_ic_message(id, msg):
 	emit_signal("ic_name", clients[id])
+	msg = text_parser.parse_markup(msg)
 	emit_signal("ic_message", msg)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + msg)
 
