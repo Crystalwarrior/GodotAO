@@ -13,19 +13,19 @@ var current_emote = 0
 var emotes = {
 	"Female Student 1":
 		[
-		{"name": "blush", "file": preload("res://res/sprites/characters/Female Student 1/blush.png")},
-		{"name": "happy", "file": preload("res://res/sprites/characters/Female Student 1/happy.png")},
-		{"name": "sad", "file": preload("res://res/sprites/characters/Female Student 1/sad.png")},
-		{"name": "surprised", "file": preload("res://res/sprites/characters/Female Student 1/surprised.png")},
-		{"name": "upset", "file": preload("res://res/sprites/characters/Female Student 1/upset.png")},
+		{"name": "blush", "file": preload("res://res/characters/Female Student 1/blush.png")},
+		{"name": "happy", "file": preload("res://res/characters/Female Student 1/happy.png")},
+		{"name": "sad", "file": preload("res://res/characters/Female Student 1/sad.png")},
+		{"name": "surprised", "file": preload("res://res/characters/Female Student 1/surprised.png")},
+		{"name": "upset", "file": preload("res://res/characters/Female Student 1/upset.png")},
 		],
 	"Female Student 2":
 		[
-		{"name": "blush", "file": preload("res://res/sprites/characters/Female Student 2/blush.png")},
-		{"name": "happy", "file": preload("res://res/sprites/characters/Female Student 2/happy.png")},
-		{"name": "sad", "file": preload("res://res/sprites/characters/Female Student 2/sad.png")},
-		{"name": "surprised", "file": preload("res://res/sprites/characters/Female Student 2/surprised.png")},
-		{"name": "upset", "file": preload("res://res/sprites/characters/Female Student 2/upset.png")}
+		{"name": "blush", "file": preload("res://res/characters/Female Student 2/blush.png")},
+		{"name": "happy", "file": preload("res://res/characters/Female Student 2/happy.png")},
+		{"name": "sad", "file": preload("res://res/characters/Female Student 2/sad.png")},
+		{"name": "surprised", "file": preload("res://res/characters/Female Student 2/surprised.png")},
+		{"name": "upset", "file": preload("res://res/characters/Female Student 2/upset.png")}
 		],
 }
 
@@ -38,6 +38,7 @@ signal login()
 signal logout()
 signal clients_changed(array)
 signal character_changed(character, emotes)
+signal play_song(song)
 
 func _ready():
 	get_tree().connect("connected_to_server", self, "enter_room")
@@ -66,6 +67,7 @@ func user_exited(id):
 	if clients.has(id):
 		emit_signal("ooc_message", "[b]" + clients[id] + " left the room[/b]")
 		clients.erase(id)
+	emit_signal("clients_changed", clients.values())
 
 func host_room():
 	var host = NetworkedMultiplayerENet.new()
@@ -95,15 +97,16 @@ func send_ooc_message(msg):
 	rpc("receive_ooc_message", id, msg)
 
 func send_ic_message(msg):
+	if msg == "": #Don't send blank messages ya doofus.
+		return
 	var id = get_tree().get_network_unique_id()
 	rpc("receive_ic_message", id, msg, character, current_emote)
 
 sync func receive_ooc_message(id, msg):
-	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
+	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
 
 sync func receive_ic_message(id, msg, chara, emote_index):
 	emit_signal("ic_name", clients[id])
-	msg = text_parser.parse_markup(msg)
 	emit_signal("ic_message", msg)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + msg)
 	emit_signal("ic_character", emotes[chara][emote_index]["file"])
@@ -130,3 +133,9 @@ func _on_character_changed(chara):
 
 func _on_emote_selected(index):
 	current_emote = index
+
+func _on_song_selected(song):
+	rpc("receive_song", song)
+
+sync func receive_song(song):
+	emit_signal("play_song", song)

@@ -64,7 +64,7 @@ func parse_markup(msg: String) -> String:
 			continue
 		elif markup.has(token): #the symbol is alien to us now, it's probably not a token
 			var tag = markup[token]
-			print("TAG: " + tag)
+#			print("TAG: " + tag)
 			if tag == "color": #special shit
 				if color != "":
 					parsed += "[/" + tag + "]"

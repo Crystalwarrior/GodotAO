@@ -1,23 +1,25 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://ChatRoom.gd" type="Script" id=1]
-[ext_resource path="res://CharacterMenu.gd" type="Script" id=2]
-[ext_resource path="res://ChatRoom.tres" type="StyleBox" id=3]
-[ext_resource path="res://Info.gd" type="Script" id=4]
-[ext_resource path="res://Login.gd" type="Script" id=5]
-[ext_resource path="res://Logs.gd" type="Script" id=6]
-[ext_resource path="res://fonts/courier new/bolditalics.tres" type="DynamicFont" id=7]
-[ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=8]
-[ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=9]
-[ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=10]
-[ext_resource path="res://OOC.gd" type="Script" id=11]
-[ext_resource path="res://Tree.gd" type="Script" id=12]
-[ext_resource path="res://View.gd" type="Script" id=13]
-[ext_resource path="res://res/sprites/backgrounds/test/110602_b.jpg" type="Texture" id=14]
-[ext_resource path="res://res/sprites/characters/Female Student 2/happy.png" type="Texture" id=15]
-[ext_resource path="res://Say.gd" type="Script" id=16]
-[ext_resource path="res://icon.png" type="Texture" id=17]
-[ext_resource path="res://Emotes.gd" type="Script" id=18]
+[ext_resource path="res://Music.gd" type="Script" id=2]
+[ext_resource path="res://CharacterMenu.gd" type="Script" id=3]
+[ext_resource path="res://ChatRoom.tres" type="StyleBox" id=4]
+[ext_resource path="res://Info.gd" type="Script" id=5]
+[ext_resource path="res://Login.gd" type="Script" id=6]
+[ext_resource path="res://Logs.gd" type="Script" id=7]
+[ext_resource path="res://fonts/courier new/bolditalics.tres" type="DynamicFont" id=8]
+[ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=9]
+[ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=10]
+[ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=11]
+[ext_resource path="res://OOC.gd" type="Script" id=12]
+[ext_resource path="res://Tree.gd" type="Script" id=13]
+[ext_resource path="res://View.gd" type="Script" id=14]
+[ext_resource path="res://res/backgrounds/test/110602_b.jpg" type="Texture" id=15]
+[ext_resource path="res://res/characters/Female Student 2/happy.png" type="Texture" id=16]
+[ext_resource path="res://Say.gd" type="Script" id=17]
+[ext_resource path="res://res/sounds/blip-female.wav" type="AudioStream" id=18]
+[ext_resource path="res://icon.png" type="Texture" id=19]
+[ext_resource path="res://Emotes.gd" type="Script" id=20]
 
 [sub_resource type="StyleBoxFlat" id=1]
 bg_color = Color( 0.0196078, 0.101961, 0.176471, 0.588235 )
@@ -45,6 +47,9 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Music" type="AudioStreamPlayer" parent="."]
+script = ExtResource( 2 )
+
 [node name="PanelContainer" type="PanelContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -56,6 +61,7 @@ margin_right = 1017.0
 margin_bottom = 761.0
 
 [node name="Top" type="HBoxContainer" parent="PanelContainer/MainWindow"]
+editor/display_folded = true
 margin_right = 1010.0
 margin_bottom = 20.0
 
@@ -63,7 +69,7 @@ margin_bottom = 20.0
 margin_right = 72.0
 margin_bottom = 20.0
 text = "Character"
-script = ExtResource( 2 )
+script = ExtResource( 3 )
 
 [node name="MainView" type="HSplitContainer" parent="PanelContainer/MainWindow"]
 margin_top = 24.0
@@ -73,22 +79,20 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Left" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 730.0
 size_flags_horizontal = 3
 
 [node name="Info" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Left"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 359.0
 rect_min_size = Vector2( 230, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = ExtResource( 4 )
 tab_align = 0
 drag_to_rearrange_enabled = true
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="Info" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
 editor/display_folded = true
@@ -98,7 +102,7 @@ margin_left = 5.0
 margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
 [node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
 margin_right = 324.0
@@ -176,17 +180,17 @@ margin_left = 5.0
 margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
-script = ExtResource( 6 )
+script = ExtResource( 7 )
 
 [node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/MainView/Left/Info/Logs"]
 margin_right = 326.0
 margin_bottom = 337.0
 focus_mode = 2
 size_flags_vertical = 3
-custom_fonts/bold_italics_font = ExtResource( 7 )
-custom_fonts/italics_font = ExtResource( 8 )
-custom_fonts/bold_font = ExtResource( 9 )
-custom_fonts/normal_font = ExtResource( 10 )
+custom_fonts/bold_italics_font = ExtResource( 8 )
+custom_fonts/italics_font = ExtResource( 9 )
+custom_fonts/bold_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 11 )
 bbcode_enabled = true
 text = "
 "
@@ -200,10 +204,10 @@ margin_bottom = 730.0
 rect_min_size = Vector2( 230, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = ExtResource( 4 )
 tab_align = 0
 drag_to_rearrange_enabled = true
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="OOC" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2"]
 anchor_right = 1.0
@@ -212,17 +216,17 @@ margin_left = 5.0
 margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
-script = ExtResource( 11 )
+script = ExtResource( 12 )
 
 [node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/MainView/Left/Info2/OOC"]
 margin_right = 324.0
 margin_bottom = 297.0
 focus_mode = 2
 size_flags_vertical = 3
-custom_fonts/bold_italics_font = ExtResource( 7 )
-custom_fonts/italics_font = ExtResource( 8 )
-custom_fonts/bold_font = ExtResource( 9 )
-custom_fonts/normal_font = ExtResource( 10 )
+custom_fonts/bold_italics_font = ExtResource( 8 )
+custom_fonts/italics_font = ExtResource( 9 )
+custom_fonts/bold_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 11 )
 bbcode_enabled = true
 text = "
 "
@@ -247,7 +251,7 @@ margin_bottom = -5.0
 margin_right = 324.0
 margin_bottom = 337.0
 size_flags_vertical = 3
-script = ExtResource( 12 )
+script = ExtResource( 13 )
 
 [node name="Right" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
 margin_left = 346.0
@@ -260,10 +264,10 @@ margin_right = 664.0
 margin_bottom = 528.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = ExtResource( 4 )
 tab_align = 0
 drag_to_rearrange_enabled = true
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="IC" type="PanelContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3"]
 anchor_right = 1.0
@@ -284,24 +288,23 @@ rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 border_color = Color( 0.054902, 1, 0, 1 )
-script = ExtResource( 13 )
+script = ExtResource( 14 )
 
 [node name="bg" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 14 )
+texture = ExtResource( 15 )
 expand = true
 stretch_mode = 7
 
 [node name="character" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 15 )
+texture = ExtResource( 16 )
 expand = true
 stretch_mode = 6
 
 [node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC"]
-editor/display_folded = true
 margin_left = 7.0
 margin_top = 319.0
 margin_right = 647.0
@@ -309,9 +312,10 @@ margin_bottom = 487.0
 size_flags_vertical = 8
 custom_constants/separation = 0
 alignment = 2
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="Box" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
+editor/display_folded = true
 margin_right = 640.0
 margin_bottom = 138.0
 custom_constants/separation = 0
@@ -331,6 +335,7 @@ margin_right = 55.0
 margin_bottom = 21.0
 
 [node name="Display" type="Panel" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Box"]
+editor/display_folded = true
 margin_top = 28.0
 margin_right = 640.0
 margin_bottom = 138.0
@@ -348,10 +353,10 @@ margin_top = 15.0
 margin_right = -15.0
 margin_bottom = -25.0
 focus_mode = 2
-custom_fonts/bold_italics_font = ExtResource( 7 )
-custom_fonts/italics_font = ExtResource( 8 )
-custom_fonts/bold_font = ExtResource( 9 )
-custom_fonts/normal_font = ExtResource( 10 )
+custom_fonts/bold_italics_font = ExtResource( 8 )
+custom_fonts/italics_font = ExtResource( 9 )
+custom_fonts/bold_font = ExtResource( 10 )
+custom_fonts/normal_font = ExtResource( 11 )
 bbcode_enabled = true
 scroll_following = true
 selection_enabled = true
@@ -364,16 +369,20 @@ rect_min_size = Vector2( 0, 30 )
 size_flags_vertical = 8
 custom_styles/normal = SubResource( 2 )
 
+[node name="Blip" type="AudioStreamPlayer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
+stream = ExtResource( 18 )
+volume_db = -20.0
+
 [node name="Info4" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Right"]
 margin_top = 540.0
 margin_right = 664.0
 margin_bottom = 730.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 3 )
+custom_styles/panel = ExtResource( 4 )
 tab_align = 0
 drag_to_rearrange_enabled = true
-script = ExtResource( 4 )
+script = ExtResource( 5 )
 
 [node name="Emotes" type="ItemList" parent="PanelContainer/MainWindow/MainView/Right/Info4"]
 anchor_right = 1.0
@@ -383,12 +392,12 @@ margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
 size_flags_vertical = 3
-items = [ "Emote", ExtResource( 17 ), false, "Item 1", ExtResource( 17 ), false, "Item 2", ExtResource( 17 ), false, "Item 3", ExtResource( 17 ), false, "Item 4", ExtResource( 17 ), false, "Item 5", ExtResource( 17 ), false, "Item 6", ExtResource( 17 ), false, "Item 7", ExtResource( 17 ), false, "Item 8", ExtResource( 17 ), false, "Item 9", ExtResource( 17 ), false, "Item 10", ExtResource( 17 ), false, "Item 11", ExtResource( 17 ), false, "Item 12", ExtResource( 17 ), false, "Item 13", ExtResource( 17 ), false, "Item 14", ExtResource( 17 ), false ]
+items = [ "Emote", ExtResource( 19 ), false, "Item 1", ExtResource( 19 ), false, "Item 2", ExtResource( 19 ), false, "Item 3", ExtResource( 19 ), false, "Item 4", ExtResource( 19 ), false, "Item 5", ExtResource( 19 ), false, "Item 6", ExtResource( 19 ), false, "Item 7", ExtResource( 19 ), false, "Item 8", ExtResource( 19 ), false, "Item 9", ExtResource( 19 ), false, "Item 10", ExtResource( 19 ), false, "Item 11", ExtResource( 19 ), false, "Item 12", ExtResource( 19 ), false, "Item 13", ExtResource( 19 ), false, "Item 14", ExtResource( 19 ), false ]
 max_columns = 16
 same_column_width = true
 icon_mode = 0
 fixed_icon_size = Vector2( 64, 64 )
-script = ExtResource( 18 )
+script = ExtResource( 20 )
 
 [connection signal="character_changed" from="." to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes" method="_on_Main_character_changed"]
 [connection signal="clients_changed" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_Main_clients_changed"]
@@ -399,6 +408,7 @@ script = ExtResource( 18 )
 [connection signal="login" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_login"]
 [connection signal="logout" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_logout"]
 [connection signal="ooc_message" from="." to="PanelContainer/MainWindow/MainView/Left/Info2/OOC" method="_on_ooc_message"]
+[connection signal="play_song" from="." to="Music" method="_on_Main_play_song"]
 [connection signal="character_changed" from="PanelContainer/MainWindow/Top/Character" to="." method="_on_character_changed"]
 [connection signal="change_ip" from="PanelContainer/MainWindow/MainView/Left/Info/Info" to="." method="_on_Login_change_ip"]
 [connection signal="change_name" from="PanelContainer/MainWindow/MainView/Left/Info/Info" to="." method="_on_Login_change_name"]
@@ -411,6 +421,8 @@ script = ExtResource( 18 )
 [connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/LeaveButton" to="." method="_on_LeaveButton_button_up"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Left/Info2/OOC" to="." method="send_ooc_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Left/Info2/OOC/Input" to="PanelContainer/MainWindow/MainView/Left/Info2/OOC" method="_on_Input_text_entered"]
+[connection signal="item_activated" from="PanelContainer/MainWindow/MainView/Left/Info2/Music/Tree" to="PanelContainer/MainWindow/MainView/Left/Info2/Music/Tree" method="_on_item_activated"]
+[connection signal="song_selected" from="PanelContainer/MainWindow/MainView/Left/Info2/Music/Tree" to="." method="_on_song_selected"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="." method="send_ic_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Input" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Input_text_entered"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes" to="." method="_on_emote_selected"]
