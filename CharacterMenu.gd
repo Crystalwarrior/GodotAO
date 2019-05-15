@@ -6,9 +6,9 @@ signal character_changed(character)
 
 func _ready():
 	popup = get_popup()
-	popup.add_icon_item(preload("res://res/characters/Female Student 1/icon.png"), "Female Student 1")
-	popup.add_icon_item(preload("res://res/characters/Female Student 2/icon.png"), "Female Student 2")
-	popup.connect("id_pressed", self, "_on_item_pressed")
+	for charname in characters.names:
+		popup.add_item(charname)
+		popup.connect("id_pressed", self, "_on_item_pressed")
 
 func _on_item_pressed(ID):
 	emit_signal("character_changed", popup.get_item_text(ID))

@@ -1,15 +1,16 @@
 extends AudioStreamPlayer
 
-func _ready():
-	pass
+var track_name = ""
 
 func _on_Main_play_song(song):
 	if song != "stop" and song.ends_with(".ogg"):
+		track_name = song.right(song.find_last("/")+1)
 		song = load_ogg(song)
 		if song is AudioStream:
 			set_stream(song)
 			play()
 			return
+	track_name = ""
 	stop()
 
 func load_ogg(song):
@@ -26,5 +27,6 @@ func load_ogg(song):
 	var bytes = ogg_file.get_buffer(ogg_file.get_len())
 	var stream = AudioStreamOGGVorbis.new()
 	stream.data = bytes
+	stream.loop = true
 	ogg_file.close()
 	return stream

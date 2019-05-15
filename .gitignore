@@ -2,4 +2,5 @@
 *.exe
 *.pck
 bin/
-*.ogg
+music/
+characters/
