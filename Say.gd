@@ -9,7 +9,6 @@ onready var blip: AudioStreamPlayer = $Blip as AudioStreamPlayer
 signal message_sent(msg)
 
 var timer = 0.0
-var delay = 0.05
 
 func _on_ic_name(nick: String) -> void:
 	showname.text = nick
@@ -20,12 +19,18 @@ func _on_ic_message(msg: String) -> void:
 	else:
 		box.show()
 	text.bbcode_text = text_parser.parse_markup(msg)
-	text.visible_characters = 1
+
+	if settings.text_speed != 0: #the fastest it can be
+		text.visible_characters = 0
+		timer = settings.text_speed
+	else:
+		text.visible_characters = -1
+		blip.play()
 
 func _process(delta):
-	if text.visible_characters < text.get_total_character_count():
+	if text.visible_characters != -1 and text.visible_characters < text.get_total_character_count():
 		timer += delta
-		if timer >= delay:
+		if timer >=  settings.text_speed:
 			if text.text and text.text[text.visible_characters] != " ":
 				blip.play()
 			text.visible_characters += 1

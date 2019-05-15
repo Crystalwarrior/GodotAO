@@ -69,6 +69,8 @@ func enter_room():
 
 func leave_room():
 	get_tree().set_network_peer(null)
+	clients.clear()
+	emit_signal("clients_changed", clients)
 	emit_signal("ooc_message", "[b]Left Room[/b]")
 	emit_signal("logout")
 

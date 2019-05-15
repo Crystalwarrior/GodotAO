@@ -126,7 +126,6 @@ margin_bottom = 730.0
 size_flags_horizontal = 3
 
 [node name="Info" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Left"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 359.0
 rect_min_size = Vector2( 230, 0 )
@@ -215,7 +214,6 @@ margin_bottom = 131.0
 text = "Leave"
 
 [node name="Logs" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
-editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -280,6 +278,7 @@ selection_enabled = true
 margin_top = 301.0
 margin_right = 324.0
 margin_bottom = 325.0
+custom_fonts/font = ExtResource( 12 )
 
 [node name="Music" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2"]
 visible = false
@@ -297,7 +296,6 @@ size_flags_vertical = 3
 script = ExtResource( 14 )
 
 [node name="Settings" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2"]
-visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -306,23 +304,22 @@ margin_right = -5.0
 margin_bottom = -5.0
 script = ExtResource( 15 )
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-margin_right = 324.0
-margin_bottom = 4.0
-
 [node name="VolumeBlips" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-editor/display_folded = true
-margin_top = 8.0
 margin_right = 324.0
-margin_bottom = 24.0
+margin_bottom = 16.0
 alignment = 2
 
 [node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeBlips"]
-margin_left = 72.0
+margin_left = 64.0
 margin_top = 1.0
-margin_right = 104.0
+margin_right = 96.0
 margin_bottom = 15.0
 text = "Blips"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeBlips"]
+margin_left = 100.0
+margin_right = 104.0
+margin_bottom = 16.0
 
 [node name="Slider" type="HSlider" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeBlips"]
 margin_left = 108.0
@@ -336,18 +333,22 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="VolumeSFX" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-editor/display_folded = true
-margin_top = 28.0
+margin_top = 20.0
 margin_right = 324.0
-margin_bottom = 44.0
+margin_bottom = 36.0
 alignment = 2
 
 [node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX"]
-margin_left = 82.0
+margin_left = 74.0
 margin_top = 1.0
-margin_right = 104.0
+margin_right = 96.0
 margin_bottom = 15.0
 text = "SFX"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX"]
+margin_left = 100.0
+margin_right = 104.0
+margin_bottom = 16.0
 
 [node name="Slider" type="HSlider" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX"]
 margin_left = 108.0
@@ -361,18 +362,22 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="VolumeMusic" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-editor/display_folded = true
-margin_top = 48.0
+margin_top = 40.0
 margin_right = 324.0
-margin_bottom = 64.0
+margin_bottom = 56.0
 alignment = 2
 
 [node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic"]
-margin_left = 66.0
+margin_left = 58.0
 margin_top = 1.0
-margin_right = 104.0
+margin_right = 96.0
 margin_bottom = 15.0
 text = "Music"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic"]
+margin_left = 100.0
+margin_right = 104.0
+margin_bottom = 16.0
 
 [node name="Slider" type="HSlider" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic"]
 margin_left = 108.0
@@ -386,9 +391,37 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="HSeparator4" type="HSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
+margin_top = 60.0
+margin_right = 324.0
+margin_bottom = 64.0
+
+[node name="TextSpeed" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
 margin_top = 68.0
 margin_right = 324.0
-margin_bottom = 72.0
+margin_bottom = 84.0
+alignment = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed"]
+margin_left = 26.0
+margin_top = 1.0
+margin_right = 96.0
+margin_bottom = 15.0
+text = "Text Speed"
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed"]
+margin_left = 100.0
+margin_right = 104.0
+margin_bottom = 16.0
+
+[node name="Slider" type="HSlider" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed"]
+margin_left = 108.0
+margin_right = 324.0
+margin_bottom = 16.0
+rect_min_size = Vector2( 216, 0 )
+max_value = 0.5
+step = 0.01
+tick_count = 11
+ticks_on_borders = true
 
 [node name="Right" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
 margin_left = 346.0
@@ -451,7 +484,6 @@ alignment = 2
 script = ExtResource( 18 )
 
 [node name="Box" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
-editor/display_folded = true
 margin_right = 640.0
 margin_bottom = 138.0
 custom_constants/separation = 0
@@ -471,7 +503,6 @@ margin_right = 55.0
 margin_bottom = 21.0
 
 [node name="Display" type="Panel" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Box"]
-editor/display_folded = true
 margin_top = 28.0
 margin_right = 640.0
 margin_bottom = 138.0
@@ -504,6 +535,7 @@ margin_bottom = 168.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_vertical = 8
 custom_styles/normal = SubResource( 2 )
+custom_fonts/font = ExtResource( 12 )
 
 [node name="Blip" type="AudioStreamPlayer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
 stream = ExtResource( 19 )
@@ -585,8 +617,9 @@ script = ExtResource( 21 )
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeBlips/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_Blips_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_SFX_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_Music_value_changed"]
+[connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_TextSpeed_value_changed"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="." method="send_ic_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Input" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Input_text_entered"]
-[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
+[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]

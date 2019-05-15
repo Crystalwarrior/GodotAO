@@ -21,6 +21,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
+settings="*res://src/globals/settings.gd"
 text_parser="*res://src/globals/text_parser.gd"
 time="*res://src/globals/time.gd"
 characters="*res://src/globals/characters.gd"
