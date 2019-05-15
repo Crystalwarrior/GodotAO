@@ -78,19 +78,20 @@ func send_ooc_message(msg):
 	var id = get_tree().get_network_unique_id()
 	rpc("receive_ooc_message", id, msg)
 
-func send_ic_message(msg):
+func send_ic_message(msg, color: Color = ColorN("white")):
 	if msg == "": #Don't send blank messages ya doofus.
 		return
 	var id = get_tree().get_network_unique_id()
-	rpc("receive_ic_message", id, msg, character, current_emote)
+	rpc("receive_ic_message", id, msg, color, character, current_emote)
 
 sync func receive_ooc_message(id, msg):
 	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
 
-sync func receive_ic_message(id, msg, chara, emote_index):
+sync func receive_ic_message(id, msg, color, chara, emote_index):
 	emit_signal("ic_name", clients[id])
-	emit_signal("ic_message", msg)
-	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + msg)
+	emit_signal("ic_message", msg, color)
+	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
+	print(text_parser.parse_markup(msg))
 	emit_signal("ic_character", characters.emotes[chara][emote_index]["file"])
 
 func _on_JoinButton_button_up():
