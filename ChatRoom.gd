@@ -91,10 +91,11 @@ sync func receive_ic_message(id, msg, color, charname, emote_index):
 	emit_signal("ic_name", clients[id])
 	emit_signal("ic_message", msg, color)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
-	print(text_parser.parse_markup(msg))
 	var emote = characters.get_char_emote(characters.get_char_index(charname), emote_index)
 	if emote:
-		emit_signal("ic_character", emote["file"])
+		emit_signal("ic_character", emote["file"], emote["stretch"])
+	else:
+		emit_signal("ic_character", characters.missing, false)
 
 func _on_JoinButton_button_up():
 	join_room()

@@ -12,11 +12,11 @@
 [ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=10]
 [ext_resource path="res://fonts/courier new/bold.tres" type="DynamicFont" id=11]
 [ext_resource path="res://fonts/courier new/normal.tres" type="DynamicFont" id=12]
-[ext_resource path="res://OOC.gd" type="Script" id=13]
-[ext_resource path="res://Tree.gd" type="Script" id=14]
-[ext_resource path="res://Settings.gd" type="Script" id=15]
-[ext_resource path="res://View.gd" type="Script" id=16]
-[ext_resource path="res://res/backgrounds/test/110602_b.jpg" type="Texture" id=17]
+[ext_resource path="res://Location.gd" type="Script" id=13]
+[ext_resource path="res://OOC.gd" type="Script" id=14]
+[ext_resource path="res://Tree.gd" type="Script" id=15]
+[ext_resource path="res://Settings.gd" type="Script" id=16]
+[ext_resource path="res://View.gd" type="Script" id=17]
 [ext_resource path="res://Say.gd" type="Script" id=18]
 [ext_resource path="res://res/sounds/blip-female.wav" type="AudioStream" id=19]
 [ext_resource path="res://Options.gd" type="Script" id=20]
@@ -138,7 +138,6 @@ drag_to_rearrange_enabled = true
 script = ExtResource( 6 )
 
 [node name="Info" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -215,6 +214,7 @@ margin_bottom = 131.0
 text = "Leave"
 
 [node name="Logs" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -225,8 +225,8 @@ margin_bottom = -5.0
 script = ExtResource( 8 )
 
 [node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/MainView/Left/Info/Logs"]
-margin_right = 326.0
-margin_bottom = 337.0
+margin_right = 324.0
+margin_bottom = 325.0
 focus_mode = 2
 size_flags_vertical = 3
 custom_fonts/bold_italics_font = ExtResource( 9 )
@@ -238,6 +238,53 @@ text = "
 "
 scroll_following = true
 selection_enabled = true
+
+[node name="Location" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 5.0
+margin_top = 29.0
+margin_right = -5.0
+margin_bottom = -5.0
+script = ExtResource( 13 )
+
+[node name="BackgroundBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info/Location"]
+margin_right = 378.0
+margin_bottom = 20.0
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Location/BackgroundBox"]
+margin_top = 3.0
+margin_right = 78.0
+margin_bottom = 17.0
+text = "Background:"
+
+[node name="BackgroundButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Left/Info/Location/BackgroundBox"]
+margin_left = 82.0
+margin_right = 378.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "gay"
+clip_text = true
+
+[node name="PositionBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info/Location"]
+margin_top = 24.0
+margin_right = 378.0
+margin_bottom = 44.0
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Location/PositionBox"]
+margin_top = 3.0
+margin_right = 56.0
+margin_bottom = 17.0
+text = "Position:"
+
+[node name="PositionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Left/Info/Location/PositionBox"]
+margin_left = 60.0
+margin_right = 378.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Haha look at my panty"
+clip_text = true
 
 [node name="Info2" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Left"]
 margin_top = 371.0
@@ -258,7 +305,7 @@ margin_left = 5.0
 margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
-script = ExtResource( 13 )
+script = ExtResource( 14 )
 
 [node name="Text" type="RichTextLabel" parent="PanelContainer/MainWindow/MainView/Left/Info2/OOC"]
 margin_right = 324.0
@@ -294,7 +341,7 @@ margin_bottom = -5.0
 margin_right = 324.0
 margin_bottom = 337.0
 size_flags_vertical = 3
-script = ExtResource( 14 )
+script = ExtResource( 15 )
 
 [node name="Settings" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2"]
 visible = false
@@ -304,7 +351,7 @@ margin_left = 5.0
 margin_top = 29.0
 margin_right = -5.0
 margin_bottom = -5.0
-script = ExtResource( 15 )
+script = ExtResource( 16 )
 
 [node name="VolumeBlips" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
 margin_right = 324.0
@@ -460,12 +507,11 @@ rect_clip_content = true
 size_flags_horizontal = 3
 size_flags_vertical = 3
 border_color = Color( 0.054902, 1, 0, 1 )
-script = ExtResource( 16 )
+script = ExtResource( 17 )
 
 [node name="bg" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-texture = ExtResource( 17 )
 expand = true
 stretch_mode = 7
 
@@ -477,7 +523,7 @@ stretch_mode = 6
 
 [node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC"]
 margin_left = 7.0
-margin_top = 319.0
+margin_top = 457.0
 margin_right = 647.0
 margin_bottom = 487.0
 size_flags_vertical = 8
@@ -486,6 +532,7 @@ alignment = 2
 script = ExtResource( 18 )
 
 [node name="Box" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
+visible = false
 margin_right = 640.0
 margin_bottom = 138.0
 custom_constants/separation = 0
@@ -532,9 +579,8 @@ scroll_following = true
 selection_enabled = true
 
 [node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say"]
-margin_top = 138.0
 margin_right = 640.0
-margin_bottom = 168.0
+margin_bottom = 30.0
 rect_min_size = Vector2( 0, 30 )
 size_flags_vertical = 8
 custom_styles/normal = SubResource( 2 )
@@ -619,6 +665,8 @@ script = ExtResource( 22 )
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Left/Info/Info/NameBox/Input" to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_Name_text_entered"]
 [connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/HostButton" to="." method="_on_HostButton_button_up"]
 [connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/LeaveButton" to="." method="_on_LeaveButton_button_up"]
+[connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Left/Info/Location/BackgroundBox/BackgroundButton" to="PanelContainer/MainWindow/MainView/Left/Info/Location" method="_on_BackgroundButton_item_selected"]
+[connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Left/Info/Location/PositionBox/PositionButton" to="PanelContainer/MainWindow/MainView/Left/Info/Location" method="_on_PositionButton_item_selected"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Left/Info2/OOC" to="." method="send_ooc_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Left/Info2/OOC/Input" to="PanelContainer/MainWindow/MainView/Left/Info2/OOC" method="_on_Input_text_entered"]
 [connection signal="item_activated" from="PanelContainer/MainWindow/MainView/Left/Info2/Music/Tree" to="PanelContainer/MainWindow/MainView/Left/Info2/Music/Tree" method="_on_item_activated"]

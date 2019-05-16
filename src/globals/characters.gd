@@ -1,6 +1,7 @@
 extends Node
 
 var list: = []
+onready var missing = preload("res://res/missingchar.png")
 
 func get_char_index(name: String) -> int:
 	if list.empty():
@@ -30,7 +31,7 @@ func get_char_emote(char_idx: int, emote_idx: int):
 	var character = get_char(char_idx)
 	if not character:
 		return null
-	if character["emotes"].empty() or char_idx > character["emotes"].size():
+	if character["emotes"].empty() or emote_idx >= character["emotes"].size():
 		return null
 	return character["emotes"][emote_idx]
 
@@ -81,14 +82,14 @@ func load_character_json(path):
 			print(entry)
 			if entry in ["file", "icon"]: #convert it to image from file path
 				var file_path = path.left(path.find_last("/")+1) + emote[entry]
-				var texture: ImageTexture
+				var texture: Resource
 				if cache.has(file_path):
 					texture = cache.get(file_path)
 				else:
 					texture = ImageTexture.new()
-					if texture.load(file_path): #deprecated method apparently
+					if texture.load(file_path) == OK: #deprecated method apparently
 						cache.add(file_path, texture)
-					#else:
-					#	missingno here
+					else:
+						texture = null
 				emote[entry] = texture
 	return data
