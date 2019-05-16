@@ -6,7 +6,7 @@ const MAX_USERS = 16 #not including host
 var my_ip = "127.0.0.1"
 var my_name = "User"
 var clients = {}
-var character = "Female Student 1"
+var character_index = 0
 var current_emote = 0
 
 signal ooc_message(msg)
@@ -17,7 +17,7 @@ signal ic_character(resource)
 signal login()
 signal logout()
 signal clients_changed(array)
-signal character_changed(character, emotes)
+signal character_changed(character)
 signal play_song(song)
 
 func _ready():
@@ -82,17 +82,19 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 	if msg == "": #Don't send blank messages ya doofus.
 		return
 	var id = get_tree().get_network_unique_id()
-	rpc("receive_ic_message", id, msg, color, character, current_emote)
+	rpc("receive_ic_message", id, msg, color, characters.get_char(character_index)["name"], current_emote)
 
 sync func receive_ooc_message(id, msg):
 	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
 
-sync func receive_ic_message(id, msg, color, chara, emote_index):
+sync func receive_ic_message(id, msg, color, charname, emote_index):
 	emit_signal("ic_name", clients[id])
 	emit_signal("ic_message", msg, color)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
 	print(text_parser.parse_markup(msg))
-	emit_signal("ic_character", characters.emotes[chara][emote_index]["file"])
+	var emote = characters.get_char_emote(characters.get_char_index(charname), emote_index)
+	if emote:
+		emit_signal("ic_character", emote["file"])
 
 func _on_JoinButton_button_up():
 	join_room()
@@ -109,10 +111,10 @@ func _on_Login_change_ip(msg):
 func _on_Login_change_name(msg):
 	my_name = msg
 
-func _on_character_changed(chara):
+func _on_character_changed(idx):
 	current_emote = 0
-	character = chara
-	emit_signal("character_changed", character, characters.emotes[character])
+	character_index = idx
+	emit_signal("character_changed", characters.get_char(idx))
 
 func _on_emote_selected(index):
 	current_emote = index

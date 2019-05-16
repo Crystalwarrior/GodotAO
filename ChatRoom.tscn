@@ -586,7 +586,6 @@ margin_left = 83.0
 margin_right = 162.0
 margin_bottom = 24.0
 text = "White"
-selected = 0
 
 [node name="Emotes" type="ItemList" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes"]
 margin_top = 34.0

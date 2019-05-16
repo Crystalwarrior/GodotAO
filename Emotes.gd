@@ -9,10 +9,10 @@ func _ready():
 func generate_buttons():
 	clear()
 	for emote in emotes:
-		add_item(emote["name"], emote["file"])
+		add_item(emote["name"], emote["icon"])
 
-func _on_Main_character_changed(character, emo):
-	emotes = emo
+func _on_Main_character_changed(character):
+	emotes = character["emotes"]
 	generate_buttons()
 
 func _on_item_selected(index):

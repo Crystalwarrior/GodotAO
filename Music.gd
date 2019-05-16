@@ -22,11 +22,17 @@ func load_ogg(song):
 		# Editor
 		path = path.get_base_dir()
 	path += "/music/" + song
-	var ogg_file = File.new()
-	ogg_file.open(path, File.READ)
-	var bytes = ogg_file.get_buffer(ogg_file.get_len())
-	var stream = AudioStreamOGGVorbis.new()
-	stream.data = bytes
-	stream.loop = true
-	ogg_file.close()
+	var stream: AudioStreamOGGVorbis
+	if cache.has(path):
+		stream = cache.get(path)
+	else:
+		var ogg_file = File.new()
+		if ogg_file.open(path, File.READ) != OK:
+			return null
+		var bytes = ogg_file.get_buffer(ogg_file.get_len()) #todo: byte checking for ogg files
+		stream = AudioStreamOGGVorbis.new()
+		stream.data = bytes
+		stream.loop = true
+		ogg_file.close()
+		cache.add(path, stream)
 	return stream

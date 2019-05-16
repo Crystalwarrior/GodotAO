@@ -1,7 +1,38 @@
 extends Node
 
-var names = []
-var emotes = {}
+var list: = []
+
+func get_char_index(name: String) -> int:
+	if list.empty():
+		return -1
+	for i in list.size():
+		var character: Dictionary = list[i] as Dictionary
+		if character["name"] == name:
+			return i
+	return -1
+
+func get_char(idx: int):
+	if list.empty() or idx > list.size():
+		return null
+	return list[idx]
+
+func get_char_names():
+	if list.empty():
+		return null
+	var names = []
+	for character in list:
+		names.append(character["name"])
+	return names
+
+func get_char_emote(char_idx: int, emote_idx: int):
+	if list.empty() or char_idx > list.size():
+		return null
+	var character = get_char(char_idx)
+	if not character:
+		return null
+	if character["emotes"].empty() or char_idx > character["emotes"].size():
+		return null
+	return character["emotes"][emote_idx]
 
 func _ready():
 	var path = ProjectSettings.globalize_path("res://")
@@ -15,8 +46,7 @@ func _ready():
 	print(path)
 
 func load_characters(path):
-	names.clear()
-	emotes.clear()
+	list.clear()
 	var dir = Directory.new()
 	if dir.open(path) == OK:
 		dir.list_dir_begin(true)
@@ -25,34 +55,40 @@ func load_characters(path):
 			var p = dir.get_current_dir() + "/" + file_name
 			if dir.current_is_dir():
 				print("Found directory: " + file_name)
-				names.append(file_name)
-				emotes[file_name] = load_emotes(p + "/emotes")
+				var data = load_character_json(p + "/char.json")
+				if data:
+					list.append(data)
 			else:
 				print("Found file: " + file_name)
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
 
-func load_emotes(path):
-	var list = []
-	var dir = Directory.new()
-	if dir.open(path) == OK:
-		dir.list_dir_begin(true)
-		var file_name = dir.get_next()
-		while (file_name != ""):
-			var file = file_name
-			var p = dir.get_current_dir() + "/" + file_name
-			if not dir.current_is_dir() and file_name.ends_with(".png"):
-				var png_file = File.new()
-				png_file.open(path, File.READ)
-#				var bytes = png_file.get_buffer(png_file.get_len())
-				var texture = ImageTexture.new()
-				texture.load(p) #deprecated method apparently
-				png_file.close()
-				list.append({"name": file_name.left(file_name.find_last(".png")), "file": texture})
-				print("Added emote for " + file_name)
-
-			file_name = dir.get_next()
-	else:
-		print("An error occurred when trying to access the path.")
-	return list
+func load_character_json(path):
+	var data_file = File.new()
+	if data_file.open(path, File.READ) != OK:
+		return
+	var data_text = data_file.get_as_text()
+	data_file.close()
+	var data_parse = JSON.parse(data_text)
+	if data_parse.error != OK:
+		return
+	var data = data_parse.result
+	if not data.has("emotes"):
+		return
+	for emote in data["emotes"]:
+		for entry in emote.keys():
+			print(entry)
+			if entry in ["file", "icon"]: #convert it to image from file path
+				var file_path = path.left(path.find_last("/")+1) + emote[entry]
+				var texture: ImageTexture
+				if cache.has(file_path):
+					texture = cache.get(file_path)
+				else:
+					texture = ImageTexture.new()
+					if texture.load(file_path): #deprecated method apparently
+						cache.add(file_path, texture)
+					#else:
+					#	missingno here
+				emote[entry] = texture
+	return data
