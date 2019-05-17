@@ -1,7 +1,9 @@
 extends HBoxContainer
 
 signal color_changed(color)
+signal additive_text(toggle)
 
+onready var additive_button: CheckBox = $AdditiveButton as CheckBox
 onready var option_button: OptionButton = $OptionButton as OptionButton
 
 var colorlist = [{"name": "White", "color": ColorN("white")},
@@ -23,3 +25,6 @@ func _ready():
 func _on_OptionButton_item_selected(ID):
 	emit_signal("color_changed", option_button.get_item_metadata(ID))
 	print(option_button.get_item_metadata(ID))
+
+func _on_AdditiveButton_toggled(button_pressed):
+	emit_signal("additive_text", button_pressed)

@@ -10,10 +10,12 @@ var character_index = 0
 var current_emote = 0
 var current_bg = 0
 var current_pos = 0
+var additive_text = false
+var last_speaker = -1
 
 signal ooc_message(msg)
 signal ic_name(nick)
-signal ic_message(msg)
+signal ic_message(msg, color, additive)
 signal ic_logs(msg)
 signal ic_character(resource, stretch)
 signal ic_background(resource)
@@ -86,14 +88,17 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 		return
 	var id = get_tree().get_network_unique_id()
 	rpc("receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
-		 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos)
+		 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
 
 sync func receive_ooc_message(id, msg):
 	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
 
-sync func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx):
+sync func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx, additive):
 	emit_signal("ic_name", clients[id])
-	emit_signal("ic_message", msg, color)
+	if id != last_speaker:
+		additive = false
+	last_speaker = id
+	emit_signal("ic_message", msg, color, additive)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
 	var emote = characters.get_char_emote(characters.get_char_index(charname), emote_index)
 	if emote:
@@ -140,3 +145,6 @@ func _on_Location_set_position(pos_idx):
 
 func _on_Location_set_background(bg_idx):
 	current_bg = bg_idx
+
+func _on_Options_additive_text(toggle):
+	additive_text = toggle

@@ -14,17 +14,21 @@ var color: Color = ColorN("white") #Our default typing color
 func _on_ic_name(nick: String) -> void:
 	showname.text = nick
 
-func _on_ic_message(msg: String, col: Color = ColorN("white")) -> void:
+func _on_ic_message(msg: String, col: Color = ColorN("white"), additive: bool = false) -> void:
 	if msg.empty() or msg == " ":
 		box.hide()
 	else:
 		box.show()
 	text.add_color_override("default_color", col)
-	text.bbcode_text = text_parser.parse_markup(msg)
-	if settings.text_speed != 0: #the fastest it can be
-		text.visible_characters = 0
+	if additive:
+		text.bbcode_text += " %s" % text_parser.parse_markup(msg)
 		timer = settings.text_speed
 	else:
+		text.bbcode_text = text_parser.parse_markup(msg)
+		text.visible_characters = 0
+		timer = settings.text_speed
+
+	if settings.text_speed == 0:
 		text.visible_characters = -1
 		blip.play()
 

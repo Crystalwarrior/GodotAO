@@ -643,20 +643,23 @@ rect_min_size = Vector2( 0, 30 )
 scroll_vertical_enabled = false
 
 [node name="Options" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer"]
-margin_right = 162.0
+margin_right = 164.0
 margin_bottom = 24.0
 rect_clip_content = true
 script = ExtResource( 21 )
 
-[node name="Dummy" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
-margin_right = 79.0
+[node name="AdditiveButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_right = 81.0
 margin_bottom = 24.0
-text = "Dummy"
+hint_tooltip = "Add text on top of your previously written dialogue"
+text = "Additive"
 
 [node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
-margin_left = 83.0
-margin_right = 162.0
+margin_left = 85.0
+margin_right = 164.0
 margin_bottom = 24.0
+hint_tooltip = "Set the default color of your text
+(note: \"Logs\" only recognizes color codes (such as \\w or \\c3), otherwise text will remain white."
 text = "White"
 
 [node name="Emotes" type="ItemList" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes"]
@@ -709,7 +712,9 @@ script = ExtResource( 23 )
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_TextSpeed_value_changed"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="." method="send_ic_message"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Input" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Input_text_entered"]
+[connection signal="additive_text" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_additive_text"]
 [connection signal="color_changed" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Options_color_changed"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/AdditiveButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_AdditiveButton_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
