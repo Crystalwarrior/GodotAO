@@ -6,7 +6,7 @@
 [ext_resource path="res://MusicDisplay.gd" type="Script" id=4]
 [ext_resource path="res://ChatRoom.tres" type="StyleBox" id=5]
 [ext_resource path="res://Info.gd" type="Script" id=6]
-[ext_resource path="res://Login.gd" type="Script" id=7]
+[ext_resource path="res://Players.gd" type="Script" id=7]
 [ext_resource path="res://Logs.gd" type="Script" id=8]
 [ext_resource path="res://fonts/courier new/bolditalics.tres" type="DynamicFont" id=9]
 [ext_resource path="res://fonts/courier new/italics.tres" type="DynamicFont" id=10]
@@ -42,7 +42,7 @@ border_width_bottom = 3
 border_color = Color( 0.592157, 0.592157, 0.592157, 1 )
 border_blend = true
 
-[node name="Main" type="Control"]
+[node name="ChatRoom" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
@@ -65,6 +65,7 @@ margin_right = 1017.0
 margin_bottom = 761.0
 
 [node name="Top" type="HBoxContainer" parent="PanelContainer/MainWindow"]
+editor/display_folded = true
 margin_right = 1010.0
 margin_bottom = 20.0
 
@@ -87,7 +88,7 @@ margin_right = 934.0
 margin_bottom = 20.0
 alignment = 1
 script = ExtResource( 4 )
-music_node = NodePath("../../../../../Music")
+music_node = NodePath("../../../../../../ChatRoom/Music")
 
 [node name="TrackName" type="Label" parent="PanelContainer/MainWindow/Top/Right/MusicDisplay"]
 margin_top = 3.0
@@ -138,7 +139,7 @@ tab_align = 0
 drag_to_rearrange_enabled = true
 script = ExtResource( 6 )
 
-[node name="Info" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
+[node name="Players" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -147,72 +148,24 @@ margin_right = -5.0
 margin_bottom = -5.0
 script = ExtResource( 7 )
 
-[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
+[node name="LeaveButton" type="Button" parent="PanelContainer/MainWindow/MainView/Left/Info/Players"]
 margin_right = 324.0
-margin_bottom = 14.0
+margin_bottom = 20.0
+text = "Leave"
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Players"]
+margin_top = 24.0
+margin_right = 324.0
+margin_bottom = 38.0
 text = "Players:"
 align = 1
 
-[node name="PlayerList" type="ItemList" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
-margin_top = 18.0
+[node name="PlayerList" type="ItemList" parent="PanelContainer/MainWindow/MainView/Left/Info/Players"]
+margin_top = 42.0
 margin_right = 324.0
-margin_bottom = 27.0
+margin_bottom = 325.0
+size_flags_vertical = 3
 auto_height = true
-
-[node name="JoinBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
-editor/display_folded = true
-margin_top = 31.0
-margin_right = 324.0
-margin_bottom = 55.0
-
-[node name="JoinButton2" type="Button" parent="PanelContainer/MainWindow/MainView/Left/Info/Info/JoinBox"]
-margin_right = 106.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-text = "Join"
-
-[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/MainView/Left/Info/Info/JoinBox"]
-margin_left = 110.0
-margin_right = 324.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-text = "127.0.0.1"
-
-[node name="NameBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
-editor/display_folded = true
-margin_top = 59.0
-margin_right = 324.0
-margin_bottom = 83.0
-
-[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Left/Info/Info/NameBox"]
-margin_top = 5.0
-margin_right = 106.0
-margin_bottom = 19.0
-size_flags_horizontal = 3
-text = "Name:"
-align = 1
-
-[node name="Input" type="LineEdit" parent="PanelContainer/MainWindow/MainView/Left/Info/Info/NameBox"]
-margin_left = 110.0
-margin_right = 324.0
-margin_bottom = 24.0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 2.0
-max_length = 24
-placeholder_text = "Your Name"
-
-[node name="HostButton" type="Button" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
-margin_top = 87.0
-margin_right = 324.0
-margin_bottom = 107.0
-text = "Host"
-
-[node name="LeaveButton" type="Button" parent="PanelContainer/MainWindow/MainView/Left/Info/Info"]
-margin_top = 111.0
-margin_right = 324.0
-margin_bottom = 131.0
-text = "Leave"
 
 [node name="Logs" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
 editor/display_folded = true
@@ -241,6 +194,7 @@ scroll_following = true
 selection_enabled = true
 
 [node name="Location" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
+editor/display_folded = true
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -498,12 +452,14 @@ tick_count = 11
 ticks_on_borders = true
 
 [node name="Right" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
+editor/display_folded = true
 margin_left = 346.0
 margin_right = 1010.0
 margin_bottom = 730.0
 size_flags_horizontal = 3
 
 [node name="Info3" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Right"]
+editor/display_folded = true
 margin_right = 664.0
 margin_bottom = 528.0
 size_flags_horizontal = 3
@@ -618,6 +574,7 @@ volume_db = -10.0
 bus = "Blips"
 
 [node name="Info4" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Right"]
+editor/display_folded = true
 margin_top = 540.0
 margin_right = 664.0
 margin_bottom = 730.0
@@ -675,26 +632,16 @@ fixed_icon_size = Vector2( 64, 64 )
 script = ExtResource( 23 )
 
 [connection signal="character_changed" from="." to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_Main_character_changed"]
-[connection signal="clients_changed" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_Main_clients_changed"]
+[connection signal="clients_changed" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Players" method="_on_Main_clients_changed"]
 [connection signal="ic_background" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Main_ic_background"]
 [connection signal="ic_character" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Main_ic_character"]
 [connection signal="ic_logs" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Logs" method="_on_ic_logs"]
 [connection signal="ic_message" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_ic_message"]
 [connection signal="ic_name" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_ic_name"]
-[connection signal="login" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_login"]
-[connection signal="logout" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_logout"]
 [connection signal="ooc_message" from="." to="PanelContainer/MainWindow/MainView/Left/Info2/OOC" method="_on_ooc_message"]
 [connection signal="play_song" from="." to="Music" method="_on_Main_play_song"]
 [connection signal="character_changed" from="PanelContainer/MainWindow/Top/Character" to="." method="_on_character_changed"]
-[connection signal="change_ip" from="PanelContainer/MainWindow/MainView/Left/Info/Info" to="." method="_on_Login_change_ip"]
-[connection signal="change_name" from="PanelContainer/MainWindow/MainView/Left/Info/Info" to="." method="_on_Login_change_name"]
-[connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/JoinBox/JoinButton2" to="." method="_on_JoinButton_button_up"]
-[connection signal="text_changed" from="PanelContainer/MainWindow/MainView/Left/Info/Info/JoinBox/Input" to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_IP_text_changed"]
-[connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Left/Info/Info/JoinBox/Input" to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_IP_text_entered"]
-[connection signal="text_changed" from="PanelContainer/MainWindow/MainView/Left/Info/Info/NameBox/Input" to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_Name_text_changed"]
-[connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Left/Info/Info/NameBox/Input" to="PanelContainer/MainWindow/MainView/Left/Info/Info" method="_on_Name_text_entered"]
-[connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/HostButton" to="." method="_on_HostButton_button_up"]
-[connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Info/LeaveButton" to="." method="_on_LeaveButton_button_up"]
+[connection signal="button_up" from="PanelContainer/MainWindow/MainView/Left/Info/Players/LeaveButton" to="." method="_on_LeaveButton_button_up"]
 [connection signal="set_background" from="PanelContainer/MainWindow/MainView/Left/Info/Location" to="." method="_on_Location_set_background"]
 [connection signal="set_position" from="PanelContainer/MainWindow/MainView/Left/Info/Location" to="." method="_on_Location_set_position"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Left/Info/Location/BackgroundBox/BackgroundButton" to="PanelContainer/MainWindow/MainView/Left/Info/Location" method="_on_BackgroundButton_item_selected"]

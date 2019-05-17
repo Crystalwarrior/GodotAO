@@ -1,9 +1,5 @@
 extends Control
 
-const PORT = 25565
-const MAX_USERS = 16 #not including host
-
-var my_ip = "127.0.0.1"
 var my_name = "User"
 var clients = {}
 var character_index = 0
@@ -19,33 +15,30 @@ signal ic_message(msg, color, additive)
 signal ic_logs(msg)
 signal ic_character(resource, stretch)
 signal ic_background(resource)
-signal login()
-signal logout()
 signal clients_changed(array)
 signal character_changed(character)
 signal play_song(song)
 
 func _ready():
-	get_tree().connect("connected_to_server", self, "enter_room")
-#	get_tree().connect("network_peer_connected", self, "user_entered")
 	get_tree().connect("network_peer_disconnected", self, "user_exited")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
+	#network.connect(
 	emit_signal("character_changed", characters.get_char(character_index))
+
+	if not get_tree().is_network_server():
+		rpc_id(1, "user_auth", network.my_name)
 
 func _server_disconnected():
 	emit_signal("ooc_message", "[b]Disconnected from Server[/b]")
 	leave_room()
 
-sync func user_auth(id, name):
-	emit_signal("ooc_message", "[b]" + name + " joined the room[/b]")
-	if not get_tree().is_network_server():
-		return
+remote func user_auth(name):
+	var id = get_tree().get_rpc_sender_id()
 	clients[id] = name
-	rpc("receive_client_list", clients)
-	emit_signal("clients_changed", clients.values())
-
-remote func receive_client_list(dict):
-	clients = dict
+	if get_tree().is_network_server():
+		for client in clients:
+			rpc_id(client, id, name)
+	emit_signal("ooc_message", "[b]" + name + " joined the room[/b]")
 	emit_signal("clients_changed", clients.values())
 
 func user_exited(id):
@@ -54,52 +47,56 @@ func user_exited(id):
 		clients.erase(id)
 	emit_signal("clients_changed", clients.values())
 
-func host_room():
-	var host = NetworkedMultiplayerENet.new()
-	host.create_server(PORT, MAX_USERS)
-	get_tree().set_network_peer(host)
-	enter_room()
-	emit_signal("ooc_message", "[u][b]Room Created[/b][/u]")
-
-func join_room():
-	var host = NetworkedMultiplayerENet.new()
-	host.create_client(my_ip, PORT)
-	get_tree().set_network_peer(host)
-
-func enter_room():
-	emit_signal("ooc_message", "[b]Successfully joined room[/b]")
-	emit_signal("login")
-	var id = get_tree().get_network_unique_id()
-	rpc("user_auth", id, my_name)
-
 func leave_room():
 	get_tree().set_network_peer(null)
 	clients.clear()
 	emit_signal("clients_changed", clients)
 	emit_signal("ooc_message", "[b]Left Room[/b]")
-	emit_signal("logout")
 
 func send_ooc_message(msg):
-	var id = get_tree().get_network_unique_id()
-	rpc("receive_ooc_message", id, msg)
+	if not get_tree().is_network_server():
+		rpc_id(1, "receive_ooc_message", msg)
+	else:
+		msg = "[color=aqua][b]SERVER[/b][/color]: %s" % text_parser.strip_bbcode(msg)
+		for client in clients:
+			rpc_id(client, "receive_ooc_message", msg)
+		emit_signal("ooc_message", msg)
+
+remote func receive_ooc_message(msg):
+	if get_tree().is_network_server():
+		msg = "[b]%s[/b]: %s" % [clients[get_tree().get_rpc_sender_id()], text_parser.strip_bbcode(msg)]
+		for client in clients:
+			rpc_id(client, "receive_ooc_message", msg)
+	emit_signal("ooc_message", msg)
 
 func send_ic_message(msg, color: Color = ColorN("white")):
 	if msg == "": #Don't send blank messages ya doofus.
 		return
 	var id = get_tree().get_network_unique_id()
-	rpc("receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
-		 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
+	if not get_tree().is_network_server():
+		rpc_id(1, "receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
+			 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
+	else:
+		receive_ic_message(1, msg, color, characters.get_char(character_index)["name"],
+			 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
 
-sync func receive_ooc_message(id, msg):
-	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
-
-sync func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx, additive):
-	emit_signal("ic_name", clients[id])
+remote func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx, additive):
+	if get_tree().is_network_server():
+		#do various checks on the vars provided and adjust as needed
+#		id = get_tree().get_rpc_sender_id() #double-check so you can't pose as anyone if you look under the hood
+		for client in clients:
+			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_name, pos_idx, additive)
+	var showname = ""
+	if id == 1:
+		showname = "SERVER"
+	else:
+		showname = clients[id]
+	emit_signal("ic_name", showname)
 	if id != last_speaker:
 		additive = false
 	last_speaker = id
 	emit_signal("ic_message", msg, color, additive)
-	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
+	emit_signal("ic_logs", "[b]" + showname + "[/b]: " + text_parser.parse_markup(msg))
 	var emote = characters.get_char_emote(characters.get_char_index(charname), emote_index)
 	if emote:
 		emit_signal("ic_character", emote["file"], emote["stretch"])
@@ -111,20 +108,8 @@ sync func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos
 	else:
 		emit_signal("ic_background", backgrounds.missing)
 
-func _on_JoinButton_button_up():
-	join_room()
-
 func _on_LeaveButton_button_up():
 	leave_room()
-
-func _on_HostButton_button_up():
-	host_room()
-
-func _on_Login_change_ip(msg):
-	my_ip = msg
-
-func _on_Login_change_name(msg):
-	my_name = msg
 
 func _on_character_changed(idx):
 	current_emote = 0
@@ -135,10 +120,16 @@ func _on_emote_selected(index):
 	current_emote = index
 
 func _on_song_selected(song):
-	rpc("receive_song", song)
+	if not get_tree().is_network_server():
+		rpc_id(1, "receive_song", song)
+	else:
+		receive_song(song)
 
-sync func receive_song(song):
-	emit_signal("play_song", song)
+remote func receive_song(song):
+	if get_tree().is_network_server():
+		for client in clients:
+			rpc_id(client, "receive_song", song)
+	emit_signal("play_song", song) #send song signal on server too
 
 func _on_Location_set_position(pos_idx):
 	current_pos = pos_idx

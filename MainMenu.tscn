@@ -1,0 +1,65 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Login.gd" type="Script" id=1]
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Login" type="VBoxContainer" parent="."]
+margin_left = 45.0
+margin_top = 34.0
+margin_right = 197.0
+margin_bottom = 110.0
+script = ExtResource( 1 )
+
+[node name="JoinBox" type="HBoxContainer" parent="Login"]
+editor/display_folded = true
+margin_right = 152.0
+margin_bottom = 24.0
+
+[node name="JoinButton" type="Button" parent="Login/JoinBox"]
+margin_right = 35.0
+margin_bottom = 24.0
+text = "Join"
+
+[node name="IPEntry" type="LineEdit" parent="Login/JoinBox"]
+margin_left = 39.0
+margin_right = 152.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "127.0.0.1"
+
+[node name="NameBox" type="HBoxContainer" parent="Login"]
+margin_top = 28.0
+margin_right = 152.0
+margin_bottom = 52.0
+
+[node name="Label" type="Label" parent="Login/NameBox"]
+margin_top = 5.0
+margin_right = 38.0
+margin_bottom = 19.0
+text = "Name"
+
+[node name="NameEntry" type="LineEdit" parent="Login/NameBox"]
+margin_left = 42.0
+margin_right = 152.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "User"
+
+[node name="HostButton" type="Button" parent="Login"]
+margin_top = 56.0
+margin_right = 152.0
+margin_bottom = 76.0
+text = "Host"
+
+[connection signal="pressed" from="Login/JoinBox/JoinButton" to="Login" method="_on_JoinButton_pressed"]
+[connection signal="text_changed" from="Login/JoinBox/IPEntry" to="Login" method="_on_IPEntry_text_changed"]
+[connection signal="text_entered" from="Login/JoinBox/IPEntry" to="Login" method="_on_IPEntry_text_entered"]
+[connection signal="text_changed" from="Login/NameBox/NameEntry" to="Login" method="_on_NameEntry_text_changed"]
+[connection signal="text_entered" from="Login/NameBox/NameEntry" to="Login" method="_on_NameEntry_text_entered"]
+[connection signal="pressed" from="Login/HostButton" to="Login" method="_on_HostButton_pressed"]

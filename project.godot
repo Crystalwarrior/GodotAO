@@ -16,16 +16,17 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot AO"
-run/main_scene="res://ChatRoom.tscn"
+run/main_scene="res://MainMenu.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 settings="*res://src/globals/settings.gd"
-text_parser="*res://src/globals/text_parser.gd"
-time="*res://src/globals/time.gd"
-characters="*res://src/globals/characters.gd"
+network="*res://src/globals/network.gd"
 cache="*res://src/globals/cache.gd"
+time="*res://src/globals/time.gd"
+text_parser="*res://src/globals/text_parser.gd"
+characters="*res://src/globals/characters.gd"
 backgrounds="*res://src/globals/backgrounds.gd"
 
 [display]
