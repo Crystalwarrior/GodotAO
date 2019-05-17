@@ -8,12 +8,15 @@ var my_name = "User"
 var clients = {}
 var character_index = 0
 var current_emote = 0
+var current_bg = 0
+var current_pos = 0
 
 signal ooc_message(msg)
 signal ic_name(nick)
 signal ic_message(msg)
 signal ic_logs(msg)
-signal ic_character(resource)
+signal ic_character(resource, stretch)
+signal ic_background(resource)
 signal login()
 signal logout()
 signal clients_changed(array)
@@ -25,7 +28,7 @@ func _ready():
 #	get_tree().connect("network_peer_connected", self, "user_entered")
 	get_tree().connect("network_peer_disconnected", self, "user_exited")
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
-#	emit_signal("character_changed", character, characters.emotes[character])
+	emit_signal("character_changed", characters.get_char(character_index))
 
 func _server_disconnected():
 	emit_signal("ooc_message", "[b]Disconnected from Server[/b]")
@@ -82,12 +85,13 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 	if msg == "": #Don't send blank messages ya doofus.
 		return
 	var id = get_tree().get_network_unique_id()
-	rpc("receive_ic_message", id, msg, color, characters.get_char(character_index)["name"], current_emote)
+	rpc("receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
+		 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos)
 
 sync func receive_ooc_message(id, msg):
 	emit_signal("ooc_message", "[b]" + clients[id] + "[/b]: " + msg)
 
-sync func receive_ic_message(id, msg, color, charname, emote_index):
+sync func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx):
 	emit_signal("ic_name", clients[id])
 	emit_signal("ic_message", msg, color)
 	emit_signal("ic_logs", "[b]" + clients[id] + "[/b]: " + text_parser.parse_markup(msg))
@@ -96,6 +100,11 @@ sync func receive_ic_message(id, msg, color, charname, emote_index):
 		emit_signal("ic_character", emote["file"], emote["stretch"])
 	else:
 		emit_signal("ic_character", characters.missing, false)
+	var pos = backgrounds.get_bg_pos(backgrounds.get_bg_index(bg_name), pos_idx)
+	if pos:
+		emit_signal("ic_background", pos["file"])
+	else:
+		emit_signal("ic_background", backgrounds.missing)
 
 func _on_JoinButton_button_up():
 	join_room()
@@ -125,3 +134,9 @@ func _on_song_selected(song):
 
 sync func receive_song(song):
 	emit_signal("play_song", song)
+
+func _on_Location_set_position(pos_idx):
+	current_pos = pos_idx
+
+func _on_Location_set_background(bg_idx):
+	current_bg = bg_idx

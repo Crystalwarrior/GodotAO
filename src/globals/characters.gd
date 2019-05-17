@@ -3,6 +3,16 @@ extends Node
 var list: = []
 onready var missing = preload("res://res/missingchar.png")
 
+func _ready():
+	var path = ProjectSettings.globalize_path("res://")
+	if path == "":
+		# Exported, will return the folder where the executable is located.
+		path = OS.get_executable_path().get_base_dir()
+	else:
+		# Editor
+		path = path.get_base_dir()
+	load_characters(path + "/characters")
+
 func get_char_index(name: String) -> int:
 	if list.empty():
 		return -1
@@ -35,17 +45,6 @@ func get_char_emote(char_idx: int, emote_idx: int):
 		return null
 	return character["emotes"][emote_idx]
 
-func _ready():
-	var path = ProjectSettings.globalize_path("res://")
-	if path == "":
-		# Exported, will return the folder where the executable is located.
-		path = OS.get_executable_path().get_base_dir()
-	else:
-		# Editor
-		path = path.get_base_dir()
-	load_characters(path + "/characters")
-	print(path)
-
 func load_characters(path):
 	list.clear()
 	var dir = Directory.new()
@@ -55,12 +54,9 @@ func load_characters(path):
 		while (file_name != ""):
 			var p = dir.get_current_dir() + "/" + file_name
 			if dir.current_is_dir():
-				print("Found directory: " + file_name)
 				var data = load_character_json(p + "/char.json")
 				if data:
 					list.append(data)
-			else:
-				print("Found file: " + file_name)
 			file_name = dir.get_next()
 	else:
 		print("An error occurred when trying to access the path.")
@@ -79,7 +75,6 @@ func load_character_json(path):
 		return
 	for emote in data["emotes"]:
 		for entry in emote.keys():
-			print(entry)
 			if entry in ["file", "icon"]: #convert it to image from file path
 				var file_path = path.left(path.find_last("/")+1) + emote[entry]
 				var texture: Resource

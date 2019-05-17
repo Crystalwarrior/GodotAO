@@ -12,3 +12,6 @@ func _on_Main_ic_character(resource, stretch):
 		character.stretch_mode = TextureRect.STRETCH_SCALE
 	else:
 		character.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+
+func _on_Main_ic_background(resource):
+	bg.texture = resource

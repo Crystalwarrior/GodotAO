@@ -13,7 +13,6 @@ func _ready():
 		# Editor
 		path = path.get_base_dir()
 	dir_contents(path + "/music")
-	print(path)
 
 func dir_contents(path, current=null, name=""):
 	var dir = Directory.new()
