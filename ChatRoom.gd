@@ -168,8 +168,7 @@ remote func set_location(bg_from, bg_to):
 				backgrounds.get_bg(bg_from)["clients"].erase(id)
 			if bg_to != -1:
 				backgrounds.get_bg(bg_to)["clients"].append(id)
-	else:
-		current_bg = bg_to
+	current_bg = bg_to
 
 func _on_Location_set_background(bg_idx):
 	if not get_tree().is_network_server():
