@@ -26,18 +26,18 @@ func _ready():
 	emit_signal("character_changed", characters.get_char(character_index))
 
 	if not get_tree().is_network_server():
-		rpc_id(1, "user_auth", network.my_name)
+		var id = get_tree().get_network_unique_id()
+		rpc_id(1, "user_auth", id, network.my_name)
 
 func _server_disconnected():
 	emit_signal("ooc_message", "[b]Disconnected from Server[/b]")
 	leave_room()
 
-remote func user_auth(name):
-	var id = get_tree().get_rpc_sender_id()
+remote func user_auth(id, name):
 	clients[id] = name
 	if get_tree().is_network_server():
 		for client in clients:
-			rpc_id(client, id, name)
+			rpc_id(client, "user_auth", id, name)
 	emit_signal("ooc_message", "[b]" + name + " joined the room[/b]")
 	emit_signal("clients_changed", clients.values())
 
@@ -83,25 +83,36 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 remote func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx, additive):
 	if get_tree().is_network_server():
 		#do various checks on the vars provided and adjust as needed
+		#example: don't send ic messages to people that aren't in the same location as the speaker
 #		id = get_tree().get_rpc_sender_id() #double-check so you can't pose as anyone if you look under the hood
 		for client in clients:
 			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_name, pos_idx, additive)
-	var showname = ""
-	if id == 1:
-		showname = "SERVER"
+
+	var ooc_name = "Null"
+	if id != 1:
+		ooc_name = clients[id]
 	else:
-		showname = clients[id]
-	emit_signal("ic_name", showname)
+		ooc_name = "[color=aqua]SERVER[/color]"
+
 	if id != last_speaker:
 		additive = false
 	last_speaker = id
 	emit_signal("ic_message", msg, color, additive)
-	emit_signal("ic_logs", "[b]" + showname + "[/b]: " + text_parser.parse_markup(msg))
-	var emote = characters.get_char_emote(characters.get_char_index(charname), emote_index)
-	if emote:
-		emit_signal("ic_character", emote["file"], emote["stretch"])
-	else:
-		emit_signal("ic_character", characters.missing, false)
+	
+	var showname = "Missingchar"
+	var char_idx = characters.get_char_index(charname)
+	if char_idx != -1:
+		var character = characters.get_char(char_idx)
+		showname = character["name"]
+		var emote = characters.get_char_emote(char_idx, emote_index)
+		if emote:
+			emit_signal("ic_character", emote["file"], emote["stretch"])
+		else:
+			emit_signal("ic_character", characters.missing, false)
+
+	emit_signal("ic_name", showname)
+	emit_signal("ic_logs", "[b]%s (%s)[/b]: %s" % [showname, ooc_name, text_parser.parse_markup(msg)])
+
 	var pos = backgrounds.get_bg_pos(backgrounds.get_bg_index(bg_name), pos_idx)
 	if pos:
 		emit_signal("ic_background", pos["file"])
