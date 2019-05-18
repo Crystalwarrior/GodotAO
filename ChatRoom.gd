@@ -35,11 +35,18 @@ func _server_disconnected():
 
 remote func user_auth(id, name):
 	clients[id] = name
+	set_location(-1, 0)
 	if get_tree().is_network_server():
 		for client in clients:
 			rpc_id(client, "user_auth", id, name)
-	emit_signal("ooc_message", "[b]" + name + " joined the room[/b]")
+		rpc_id(id, "get_client_list", clients)
+#	emit_signal("ooc_message", "[b]" + name + " joined the room[/b]")
 	emit_signal("clients_changed", clients.values())
+
+remote func get_client_list(list):
+	if not get_tree().is_network_server():
+		clients = list
+		emit_signal("clients_changed", clients.values())
 
 func user_exited(id):
 	if clients.has(id):
@@ -75,18 +82,25 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 	var id = get_tree().get_network_unique_id()
 	if not get_tree().is_network_server():
 		rpc_id(1, "receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
+			 current_emote, current_bg, current_pos, additive_text)
 	else:
 		receive_ic_message(1, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, backgrounds.get_bg(current_bg)["name"], current_pos, additive_text)
+			 current_emote, current_bg, current_pos, additive_text)
 
-remote func receive_ic_message(id, msg, color, charname, emote_index, bg_name, pos_idx, additive):
+remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, pos_idx, additive):
 	if get_tree().is_network_server():
 		#do various checks on the vars provided and adjust as needed
 		#example: don't send ic messages to people that aren't in the same location as the speaker
-#		id = get_tree().get_rpc_sender_id() #double-check so you can't pose as anyone if you look under the hood
-		for client in clients:
-			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_name, pos_idx, additive)
+		if id != 1:
+			id = get_tree().get_rpc_sender_id() #double-check
+			bg_idx = 0
+			for i in backgrounds.list.size():
+				var bg = backgrounds.list[i]
+				if bg["clients"].has(id):
+					bg_idx = i
+					break
+		for client in backgrounds.get_bg(bg_idx)["clients"]:
+			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_idx, pos_idx, additive)
 
 	var ooc_name = "Null"
 	if id != 1:
@@ -113,7 +127,7 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_name, p
 	emit_signal("ic_name", showname)
 	emit_signal("ic_logs", "[b]%s (%s)[/b]: %s" % [showname, ooc_name, text_parser.parse_markup(msg)])
 
-	var pos = backgrounds.get_bg_pos(backgrounds.get_bg_index(bg_name), pos_idx)
+	var pos = backgrounds.get_bg_pos(bg_idx, pos_idx)
 	if pos:
 		emit_signal("ic_background", pos["file"])
 	else:
@@ -145,8 +159,23 @@ remote func receive_song(song):
 func _on_Location_set_position(pos_idx):
 	current_pos = pos_idx
 
+remote func set_location(bg_from, bg_to):
+	if get_tree().is_network_server():
+		var id = get_tree().get_rpc_sender_id()
+		print(id)
+		if id != 1:
+			if bg_from != -1:
+				backgrounds.get_bg(bg_from)["clients"].erase(id)
+			if bg_to != -1:
+				backgrounds.get_bg(bg_to)["clients"].append(id)
+	else:
+		current_bg = bg_to
+
 func _on_Location_set_background(bg_idx):
-	current_bg = bg_idx
+	if not get_tree().is_network_server():
+		rpc_id(1, "set_location", current_bg, bg_idx)
+	else:
+		set_location(current_bg, bg_idx)
 
 func _on_Options_additive_text(toggle):
 	additive_text = toggle

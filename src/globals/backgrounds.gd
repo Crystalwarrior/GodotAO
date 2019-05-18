@@ -45,6 +45,14 @@ func get_bg_pos(bg_idx: int, pos_idx: int):
 		return null
 	return bg["positions"][pos_idx]
 
+func get_client_in_bg(bg_idx: int, client: int):
+	if list.empty() or bg_idx > list.size():
+		return null
+	var bg = get_bg(bg_idx)
+	if not bg:
+		return null
+	return bg["clients"].find(client)
+
 func load_backgrounds(path):
 	list.clear()
 	var dir = Directory.new()
@@ -58,7 +66,7 @@ func load_backgrounds(path):
 				print("Found background: " + file_name)
 				var data = get_positions(file_path)
 				if data:
-					list.append({"name": file_name, "positions": data})
+					list.append({"name": file_name, "positions": data, "clients": []})
 #			else:
 #				print("Found file: " + file_name)
 			file_name = dir.get_next()
