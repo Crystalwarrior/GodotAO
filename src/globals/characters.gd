@@ -75,7 +75,7 @@ func load_character_json(path):
 		return
 	for emote in data["emotes"]:
 		for entry in emote.keys():
-			if entry in ["file", "icon"]: #convert it to image from file path
+			if entry in ["file", "icon", "flap"]: #convert it to image from file path
 				var file_path = path.left(path.find_last("/")+1) + emote[entry]
 				var texture: Resource
 				if cache.has(file_path):

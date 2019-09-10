@@ -13,7 +13,7 @@ signal ooc_message(msg)
 signal ic_name(nick)
 signal ic_message(msg, color, additive)
 signal ic_logs(msg)
-signal ic_character(resource, stretch)
+signal ic_character(character, resource, stretch)
 signal ic_background(resource)
 signal clients_changed(array)
 signal character_changed(character)
@@ -120,7 +120,7 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 		showname = character["name"]
 		var emote = characters.get_char_emote(char_idx, emote_index)
 		if emote:
-			emit_signal("ic_character", emote["file"], emote["stretch"])
+			emit_signal("ic_character", emote, emote["file"], emote["stretch"])
 		else:
 			emit_signal("ic_character", characters.missing, false)
 

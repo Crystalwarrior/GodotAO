@@ -7,6 +7,7 @@ onready var text: RichTextLabel = $Box/Display/Text as RichTextLabel
 onready var blip: AudioStreamPlayer = $Blip as AudioStreamPlayer
 
 signal message_sent(msg, color)
+signal flap(vis, frame)
 
 var timer = 0.0
 var color: Color = ColorN("white") #Our default typing color
@@ -36,8 +37,34 @@ func _process(delta):
 	if text.visible_characters != -1 and text.visible_characters < text.get_total_character_count():
 		timer += delta
 		if timer >=  settings.text_speed:
-			if text.text and text.text[text.visible_characters] != " ":
+			var letter: String = text.text[text.visible_characters] as String
+			var pair: String = ""
+			if text.visible_characters+1 < text.get_total_character_count():
+				pair = letter + text.text[text.visible_characters+1] as String
+			if text.text and letter != " ":
 				blip.play()
+
+			if pair.to_lower() in ["th"]:
+				emit_signal("flap", true, 7)
+			elif pair.to_lower() in ["sh", "ch"]:
+				emit_signal("flap", true, 8)
+			elif letter.to_lower() in ["a", "e", "i", "u"]:
+				emit_signal("flap", true, 0)
+			elif letter.to_lower() in ["b", "m", "p"]:
+				emit_signal("flap", true, 1)
+			elif letter.to_lower() in ["c", "g", "s", "z", "x"]:
+				emit_signal("flap", true, 2)
+			elif letter.to_lower() in ["h", "k", "r"]:
+				emit_signal("flap", true, 3)
+			elif letter.to_lower() in ["d", "l", "n", "t", "j"]:
+				emit_signal("flap", true, 4)
+			elif letter.to_lower() in ["o", "q", "y"]:
+				emit_signal("flap", true, 5)
+			elif letter.to_lower() in ["f", "v", "w"]:
+				emit_signal("flap", true, 6)
+			else:
+				emit_signal("flap", false, 0)
+
 			text.visible_characters += 1
 			timer = 0
 
