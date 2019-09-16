@@ -128,7 +128,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Left" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 730.0
 size_flags_horizontal = 3
@@ -145,7 +144,6 @@ drag_to_rearrange_enabled = true
 script = ExtResource( 7 )
 
 [node name="Players" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -520,17 +518,17 @@ anchor_bottom = 1.0
 expand = true
 stretch_mode = 7
 
-[node name="character" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-expand = true
-stretch_mode = 6
-
 [node name="flap" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+visible = false
 texture = ExtResource( 20 )
 centered = false
 vframes = 3
 hframes = 3
+
+[node name="character" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+position = Vector2( 319, 241 )
+scale = Vector2( 2.5, 2.5 )
+region_rect = Rect2( 0, 0, 10, 10 )
 
 [node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC"]
 margin_left = 7.0
@@ -602,7 +600,6 @@ volume_db = -10.0
 bus = "Blips"
 
 [node name="Info4" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Right"]
-editor/display_folded = true
 margin_top = 540.0
 margin_right = 664.0
 margin_bottom = 730.0
@@ -658,6 +655,7 @@ same_column_width = true
 icon_mode = 0
 fixed_icon_size = Vector2( 64, 64 )
 script = ExtResource( 25 )
+
 [connection signal="character_changed" from="." to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_Main_character_changed"]
 [connection signal="clients_changed" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Players" method="_on_Main_clients_changed"]
 [connection signal="ic_background" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Main_ic_background"]
@@ -691,6 +689,6 @@ script = ExtResource( 25 )
 [connection signal="color_changed" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Options_color_changed"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/AdditiveButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_AdditiveButton_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
-[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
+[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]
