@@ -122,17 +122,19 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 		
 		if emote:
 			var frames = [0]
-			var delays = [0]
+			var delay = 0
 			var rows = 1
 			var columns = 1
 			var loop = false
+			var effects = []
 			if emote.has("frames"):
 				frames = emote["frames"]
-				delays = emote["delays"]
+				delay = emote["delay"]
 				rows = emote["rows"]
 				columns = emote["columns"]
 				loop = emote["loop"]
-			emit_signal("ic_character", emote, emote["file"], emote["stretch"], frames, delays, rows, columns, loop)
+				effects = emote["effects"]
+			emit_signal("ic_character", emote, emote["file"], frames, delay, rows, columns, loop, effects)
 		else:
 			emit_signal("ic_character", characters.missing, false)
 
