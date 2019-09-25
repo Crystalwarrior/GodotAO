@@ -37,6 +37,7 @@ func _process(delta):
 	if character.hframes > 1 and frame_counter <= current_frames.size()-1:
 
 		if timer >= current_delay:
+			"""
 			# If the current element in the array is a string
 			if typeof(current_frames[frame_counter]) == 4 && cycle_number == 0:
 				# Check if this element in the array playing the first time
@@ -57,6 +58,7 @@ func _process(delta):
 					current_delay = base_delay
 					keep_delay = false
 			# If the current element in the array is an integer
+			
 			elif cycle_number == 0: 
 				current_frame = current_frames[frame_counter]
 				# Check if animation is finished and if it's looping
@@ -87,6 +89,46 @@ func _process(delta):
 						keep_delay = frame_effects["keep_delay"]
 					else:
 						keep_delay = false
+#			timer = 0.0
+#		character.frame = current_frame
+	"""
+		
+			if typeof(current_frames[frame_counter]) == 4:
+				if cycle_number == 0 && played == false:
+					current_frame =  int(current_frames[frame_counter].split("-")[0])
+					cycle_number = int(current_frames[frame_counter].split("-")[1]) - int(current_frames[frame_counter].split("-")[0])
+					played = true
+					$Label.text = String(frame_counter)
+				if cycle_number > 0:
+					current_frame += 1
+					cycle_number -= 1
+			elif cycle_number == 0:
+				current_frame = current_frames[frame_counter]
+				played = true
+				
+			if cycle_number == 0:
+				if frame_counter == current_frames.size()-1 and current_loop == true and played == true:
+					frame_counter = 0
+					cycle_number = 0
+					current_delay = base_delay
+					keep_delay = false
+					played = false
+				else:
+					frame_counter += 1
+					played = false
+			# KEEP DELAY
+			if keep_delay == false:
+				current_delay = base_delay
+			if current_effects.has(String(current_frame)):
+				var frame_effects = current_effects[String(current_frame)]
+				# Set delay to the frame's delay
+				if frame_effects.has("delay"):
+					current_delay = frame_effects["delay"]
+					# Check if the frame's delay remain the delay for the animation
+					if frame_effects.has("keep_delay"):
+						keep_delay = frame_effects["keep_delay"]
+					else:
+						keep_delay = false
 			timer = 0.0
 		character.frame = current_frame
 
@@ -95,6 +137,7 @@ func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, 
 	current_frame = 0
 	frame_counter = 0
 	cycle_number = 0
+	played = false
 	character.texture = resource
 	character.vframes = rows
 	character.hframes = columns
