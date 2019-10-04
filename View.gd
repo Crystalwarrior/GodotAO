@@ -98,7 +98,7 @@ func _process(delta):
 	$Label.text = String(int(blinkCurrentWait))
 
 
-func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, effects, flap_data, flapfile, blink_data, blinkfile):
+func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, effects, flap_data, blink_data):
 	if current_emote != emote:
 		current_emote = emote
 		current_frame = 0
@@ -118,45 +118,54 @@ func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, 
 		character.current_base_delay = character.current_delay
 		character.current_loop = loop
 		character.current_effects = effects
-	if flap_data.size() > 0:
+	if flap_data != null:
 		character.texture = characterTexture
 #		flap.visible = true
 		flap.frame_counter = 0
 		flap.cycle_number = 0
 		flap.anim_frame = 0
-		flap.texture = flapfile
+		flap.texture = flap_data["file"]
 		flap.vframes = flap_data["rows"]
 		flap.hframes = flap_data["columns"]
-		flap.current_frames = flap_data["frames"]
-		flap.current_base_delay = flap_data["delay"]
-		off = flap_data["offset"].split(" ")
+		flap.current_frames = emote["flap_data"]["frames"]
+		flap.current_base_delay = emote["flap_data"]["delay"]
+		off = emote["flap_data"]["offset"].split(" ")
 #		flap.set_position(off[0], off[1])
-		flapImage = flapfile.get_data()
-		flapImageW = flapfile.get_width()/flap.hframes
-		flapImageH = flapfile.get_height()/flap.vframes
+		flapImage = flap_data["file"].get_data()
+		flapImageW = flap_data["file"].get_width()/flap.hframes
+		flapImageH = flap_data["file"].get_height()/flap.vframes
+		if emote["flap_data"].has("effects"):
+			flap.current_effects = emote["flap_data"]["effects"]
+		else:
+			flap.current_effects = []
 	else:
 		flap.visible = false
 		flapImage = null
 		characterImage = null
 		character.texture = resource
-	if blink_data.size() > 0:
-		blink.frame_counter = 0
-		blink.cycle_number = 0
-		blink.anim_frame = 0
-		blink.texture = blinkfile
+	if blink_data != null:
+		blink.texture = blink_data["file"]
 		blink.vframes = blink_data["rows"]
 		blink.hframes = blink_data["columns"]
-		blink.current_frames = blink_data["frames"]
-		blink.current_delay = blink_data["delay"]
-		blink.current_base_delay = blink_data["delay"]
-		blinkoff = blink_data["offset"].split(" ")
-		blinkImage = blinkfile.get_data()
-		blinkImageW = blinkfile.get_width()/blink.hframes
-		blinkImageH = blinkfile.get_height()/blink.vframes
-		blinkWaitFrames = blink_data["wait"]
-		blinkWaitFrame = 0
-		blinkWaitTimer = 0
-		blink_timer = 0.0
+		blink.current_frames = emote["blink_data"]["frames"]
+		blink.current_delay = emote["blink_data"]["delay"]
+		blink.current_base_delay = emote["blink_data"]["delay"]
+		blinkoff = emote["blink_data"]["offset"].split(" ")
+		blinkImage = blink_data["file"].get_data()
+		blinkImageW = blink_data["file"].get_width()/blink.hframes
+		blinkImageH = blink_data["file"].get_height()/blink.vframes
+		blinkWaitFrames = emote["blink_data"]["wait"]
+		if emote["blink_data"].has("effects"):
+			blink.current_effects = emote["blink_data"]["effects"]
+		else:
+			blink.current_effects = []
+		if current_emote != emote:
+			blink.frame_counter = 0
+			blink.cycle_number = 0
+			blink.anim_frame = 0
+			blinkWaitFrame = 0
+			blinkWaitTimer = 0
+			blink_timer = 0.0
 	else:
 		blinkImage = null
 		blinkWaitFrames = []
