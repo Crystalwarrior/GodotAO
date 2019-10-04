@@ -127,6 +127,10 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 			var columns = 1
 			var loop = false
 			var effects = []
+			var flap = []
+			var flapfile = ""
+			var blink = []
+			var blinkfile = ""
 			if emote.has("frames"):
 				frames = emote["frames"]
 				delay = emote["delay"]
@@ -134,7 +138,14 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 				columns = emote["columns"]
 				loop = emote["loop"]
 				effects = emote["effects"]
-			emit_signal("ic_character", emote, emote["file"], frames, delay, rows, columns, loop, effects)
+			if emote.has("flap"):
+				flap = emote["flap"]
+				flapfile = emote["flapfile"]
+			if emote.has("blink"):
+				blink = emote["blink"]
+				blinkfile = emote["blinkfile"]
+				
+			emit_signal("ic_character", emote, emote["file"], frames, delay, rows, columns, loop, effects, flap, flapfile, blink, blinkfile)
 		else:
 			emit_signal("ic_character", characters.missing, false)
 

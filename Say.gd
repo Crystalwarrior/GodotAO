@@ -5,12 +5,16 @@ onready var box: Control = $Box as Control
 onready var showname: Label = $Box/Name/Text as Label
 onready var text: RichTextLabel = $Box/Display/Text as RichTextLabel
 onready var blip: AudioStreamPlayer = $Blip as AudioStreamPlayer
+onready var flap = get_node("../View/character/flap")
 
 signal message_sent(msg, color)
 signal flap(vis, frame)
 
 var timer = 0.0
 var color: Color = ColorN("white") #Our default typing color
+
+func _ready():
+	flap.flap = false
 
 func _on_ic_name(nick: String) -> void:
 	showname.text = nick
@@ -41,6 +45,9 @@ func _process(delta):
 			var pair: String = ""
 			if text.visible_characters+1 < text.get_total_character_count():
 				pair = letter + text.text[text.visible_characters+1] as String
+				flap.flap = true
+			else:
+				flap.flap = false
 			if text.text and letter != " ":
 				blip.play()
 

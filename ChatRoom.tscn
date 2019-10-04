@@ -19,7 +19,7 @@
 [ext_resource path="res://URLBox.gd" type="Script" id=17]
 [ext_resource path="res://Settings.gd" type="Script" id=18]
 [ext_resource path="res://View.gd" type="Script" id=19]
-[ext_resource path="res://Celestia_1.png" type="Texture" id=20]
+[ext_resource path="res://Sprite.gd" type="Script" id=20]
 [ext_resource path="res://Say.gd" type="Script" id=21]
 [ext_resource path="res://res/sounds/blip-female.wav" type="AudioStream" id=22]
 [ext_resource path="res://Options.gd" type="Script" id=23]
@@ -515,20 +515,33 @@ script = ExtResource( 19 )
 [node name="bg" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -0.131042
+margin_top = 0.262054
+margin_right = -0.131042
+margin_bottom = 0.262054
 expand = true
 stretch_mode = 7
-
-[node name="flap" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
-visible = false
-texture = ExtResource( 20 )
-centered = false
-vframes = 3
-hframes = 3
 
 [node name="character" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 position = Vector2( 319, 241 )
 scale = Vector2( 2.5, 2.5 )
 region_rect = Rect2( 0, 0, 10, 10 )
+script = ExtResource( 20 )
+
+[node name="flap" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View/character"]
+visible = false
+position = Vector2( 36.91, -89.455 )
+centered = false
+script = ExtResource( 20 )
+
+[node name="blink" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View/character"]
+visible = false
+position = Vector2( 36.68, 0 )
+script = ExtResource( 20 )
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+margin_right = 40.0
+margin_bottom = 14.0
 
 [node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC"]
 margin_left = 7.0
@@ -625,7 +638,7 @@ rect_min_size = Vector2( 0, 30 )
 scroll_vertical_enabled = false
 
 [node name="Options" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer"]
-margin_right = 164.0
+margin_right = 217.0
 margin_bottom = 24.0
 rect_clip_content = true
 script = ExtResource( 23 )
@@ -636,9 +649,15 @@ margin_bottom = 24.0
 hint_tooltip = "Add text on top of your previously written dialogue"
 text = "Additive"
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+[node name="CheckBox" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
 margin_left = 85.0
-margin_right = 164.0
+margin_right = 134.0
+margin_bottom = 24.0
+text = "Pre"
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_left = 138.0
+margin_right = 217.0
 margin_bottom = 24.0
 hint_tooltip = "Set the default color of your text
 (note: \"Logs\" only recognizes color codes (such as \\w or \\c3), otherwise text will remain white."
