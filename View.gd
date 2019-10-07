@@ -5,6 +5,8 @@ onready var character = $character
 onready var flap = $character/flap
 onready var blink = $character/blink
 
+signal toggle_pre(status)
+
 var current_emote = null
 
 var character_frames = [0]
@@ -39,6 +41,9 @@ var blinkWaitFrames = []
 var blinkWaitFrame = 0
 var blinkCurrentWait = 0
 var blinkWaitTimer = 0.0
+var emoteHolder = []
+var pre = false
+var play_pre = false
 
 func _ready():
 	characterTexture.storage = ImageTexture.STORAGE_COMPRESS_LOSSLESS
@@ -67,6 +72,11 @@ func _process(delta):
 
 	var viewportWidth = self.rect_size.x
 	var viewportHeight = self.rect_size.y
+
+
+#	if character.frame_counter == character.current_frames.size()-1 and character.hframes > 1:
+#		pre = false
+#		_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null)
 
 	if character.hframes > 1 and character.frame_counter <= character.current_frames.size()-1:
 		if character_timer >= character.current_delay:
@@ -98,8 +108,24 @@ func _process(delta):
 	$Label.text = String(int(blinkCurrentWait))
 
 
-func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, effects, flap_data, blink_data):
+func _toggle_Pre(status):
+	play_pre = status
+
+func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre):
+	if pre_data != null and play_pre == true:
+			emoteHolder = [emote, flap_data, blink_data]
+			emote = pre_data
+			pre = true
+			emit_signal("toggle_pre", true)
+	else:
+		emit_signal("toggle_pre", false)
 	if current_emote != emote:
+		if emote.has("flap"):
+			characterImage = emote["file"].get_data()
+			characterBaseImage = emote["file"].get_data()
+			character.texture = characterTexture
+		else:
+			character.texture = emote["file"]
 		current_emote = emote
 		current_frame = 0
 		character.frame_counter = 0
@@ -108,57 +134,36 @@ func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, 
 		character.frame = 0
 		character.anim_frame = 0
 		character.played = false
-		character.vframes = rows
-		character.hframes = columns
-		characterImage = resource.get_data()
-		characterBaseImage = resource.get_data()
-	if frames != null:
-		character.current_frames = frames
-		character.current_delay = delay
+		_unpack_Emote(character, emote, ["rows", "columns"])
+	if emote.has("frames"):
+		_unpack_Emote(character, emote, ["frames", "delay", "loop", "effects"])
 		character.current_base_delay = character.current_delay
-		character.current_loop = loop
-		character.current_effects = effects
-	if flap_data != null:
-		character.texture = characterTexture
+	if emote.has("flap"):
 #		flap.visible = true
 		flap.frame_counter = 0
 		flap.cycle_number = 0
 		flap.anim_frame = 0
-		flap.texture = flap_data["file"]
-		flap.vframes = flap_data["rows"]
-		flap.hframes = flap_data["columns"]
-		flap.current_frames = emote["flap_data"]["frames"]
+		_unpack_Emote(flap, flap_data, ["file", "rows", "columns"])
+		_unpack_Emote(flap, emote["flap_data"], ["frames", "delay", "effects"])
 		flap.current_base_delay = emote["flap_data"]["delay"]
 		off = emote["flap_data"]["offset"].split(" ")
-#		flap.set_position(off[0], off[1])
 		flapImage = flap_data["file"].get_data()
 		flapImageW = flap_data["file"].get_width()/flap.hframes
 		flapImageH = flap_data["file"].get_height()/flap.vframes
-		if emote["flap_data"].has("effects"):
-			flap.current_effects = emote["flap_data"]["effects"]
-		else:
-			flap.current_effects = []
 	else:
 		flap.visible = false
 		flapImage = null
 		characterImage = null
-		character.texture = resource
-	if blink_data != null:
+	if emote.has("blink"):
 		blink.texture = blink_data["file"]
-		blink.vframes = blink_data["rows"]
-		blink.hframes = blink_data["columns"]
-		blink.current_frames = emote["blink_data"]["frames"]
-		blink.current_delay = emote["blink_data"]["delay"]
-		blink.current_base_delay = emote["blink_data"]["delay"]
+		_unpack_Emote(blink, blink_data, ["rows", "columns"])
+		_unpack_Emote(blink, emote["blink_data"], ["frames", "delay", "effects"])
 		blinkoff = emote["blink_data"]["offset"].split(" ")
+		blink.current_base_delay = emote["blink_data"]["delay"]
 		blinkImage = blink_data["file"].get_data()
 		blinkImageW = blink_data["file"].get_width()/blink.hframes
 		blinkImageH = blink_data["file"].get_height()/blink.vframes
 		blinkWaitFrames = emote["blink_data"]["wait"]
-		if emote["blink_data"].has("effects"):
-			blink.current_effects = emote["blink_data"]["effects"]
-		else:
-			blink.current_effects = []
 		if current_emote != emote:
 			blink.frame_counter = 0
 			blink.cycle_number = 0
@@ -170,6 +175,50 @@ func _on_Main_ic_character(emote, resource, frames, delay, rows, columns, loop, 
 		blinkImage = null
 		blinkWaitFrames = []
 
+func _unpack_Emote(object, dictionary, array):
+	for item in array:
+		if item == "file":
+			if dictionary.has("file"):
+				object.texture = dictionary["file"]
+			else:
+				print(object.name)
+				print("WHAT?")
+
+		if item == "rows":
+			if dictionary.has("rows"):
+				object.vframes = dictionary["rows"]
+			else:
+				object.vframes = 1
+
+		if item == "columns":
+			if dictionary.has("columns"):
+				object.hframes = dictionary["columns"]
+			else:
+				object.hframes = 1
+
+		if item == "frames":
+			if dictionary.has("frames"):
+				object.current_frames = dictionary["frames"]
+			else:
+				object.current_frames = []
+
+		if item == "delay":
+			if dictionary.has("delay"):
+				object.current_delay = dictionary["delay"]
+			else:
+				object.current_delay = []
+
+		if item == "loop":
+			if dictionary.has("loop"):
+				object.current_loop = dictionary["loop"]
+			else:
+				object.current_loop = false
+
+		if item == "effects":
+			if dictionary.has("effects"):
+				object.current_effects = dictionary["effects"]
+			else:
+				object.current_effects = []
 
 func _on_Main_ic_background(resource):
 	bg.texture = resource
@@ -214,13 +263,18 @@ func _anim(object):
 
 func _set_loop(object):
 # Check if animation should loop
-	if object.frame_counter == object.current_frames.size()-1 and object.current_loop == true and object.played == true:
-		object.frame_counter = 0
-		object.cycle_number = 0
-		object.anim_frame = 0
-		object.current_delay = object.current_base_delay
-		object.keep_delay = false
-		object.played = false
+	if object.frame_counter == object.current_frames.size()-1 and object.cycle_number == 0:
+		if object.name == "character" and pre == true:
+			pre = false
+#			emit_signal("toggle_pre", false)
+			_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null, false)
+		if object.current_loop == true and object.played == true:
+			object.frame_counter = 0
+			object.cycle_number = 0
+			object.anim_frame = 0
+			object.current_delay = object.current_base_delay
+			object.keep_delay = false
+			object.played = false
 	# If no looping it jump to the next frame in the array
 	else:
 		object.frame_counter += 1

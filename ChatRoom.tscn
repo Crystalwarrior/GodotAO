@@ -540,6 +540,7 @@ position = Vector2( 36.68, 0 )
 script = ExtResource( 20 )
 
 [node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+visible = false
 margin_right = 40.0
 margin_bottom = 14.0
 
@@ -647,12 +648,17 @@ script = ExtResource( 23 )
 margin_right = 81.0
 margin_bottom = 24.0
 hint_tooltip = "Add text on top of your previously written dialogue"
+focus_mode = 0
+enabled_focus_mode = 0
 text = "Additive"
 
-[node name="CheckBox" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+[node name="PreButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
 margin_left = 85.0
 margin_right = 134.0
 margin_bottom = 24.0
+hint_tooltip = "Play pre animation"
+focus_mode = 0
+enabled_focus_mode = 0
 text = "Pre"
 
 [node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
@@ -661,6 +667,8 @@ margin_right = 217.0
 margin_bottom = 24.0
 hint_tooltip = "Set the default color of your text
 (note: \"Logs\" only recognizes color codes (such as \\w or \\c3), otherwise text will remain white."
+focus_mode = 0
+enabled_focus_mode = 0
 text = "White"
 
 [node name="Emotes" type="ItemList" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes"]
@@ -669,6 +677,7 @@ margin_right = 654.0
 margin_bottom = 156.0
 size_flags_vertical = 3
 items = [ "Emote", ExtResource( 24 ), false, "Item 1", ExtResource( 24 ), false, "Item 2", ExtResource( 24 ), false, "Item 3", ExtResource( 24 ), false, "Item 4", ExtResource( 24 ), false, "Item 5", ExtResource( 24 ), false, "Item 6", ExtResource( 24 ), false, "Item 7", ExtResource( 24 ), false, "Item 8", ExtResource( 24 ), false, "Item 9", ExtResource( 24 ), false, "Item 10", ExtResource( 24 ), false, "Item 11", ExtResource( 24 ), false, "Item 12", ExtResource( 24 ), false, "Item 13", ExtResource( 24 ), false, "Item 14", ExtResource( 24 ), false ]
+allow_reselect = true
 max_columns = 16
 same_column_width = true
 icon_mode = 0
@@ -701,13 +710,18 @@ script = ExtResource( 25 )
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_SFX_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_Music_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_TextSpeed_value_changed"]
+[connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Toggle_pre"]
 [connection signal="flap" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Say_flap"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="." method="send_ic_message"]
+[connection signal="pre_off" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_off"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Input" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Input_text_entered"]
 [connection signal="additive_text" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_additive_text"]
 [connection signal="color_changed" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Options_color_changed"]
+[connection signal="pre_animation" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_pre_animation"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/AdditiveButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_AdditiveButton_toggled"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/PreButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]
+[connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Toggle_pre"]

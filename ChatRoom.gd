@@ -7,6 +7,7 @@ var current_emote = 0
 var current_bg = 0
 var current_pos = 0
 var additive_text = false
+var play_pre = false
 var last_speaker = -1
 
 signal ooc_message(msg)
@@ -82,12 +83,12 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 	var id = get_tree().get_network_unique_id()
 	if not get_tree().is_network_server():
 		rpc_id(1, "receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, current_bg, current_pos, additive_text)
+			 current_emote, current_bg, current_pos, additive_text, play_pre)
 	else:
 		receive_ic_message(1, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, current_bg, current_pos, additive_text)
+			 current_emote, current_bg, current_pos, additive_text, play_pre)
 
-remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, pos_idx, additive):
+remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre):
 	if get_tree().is_network_server():
 		#do various checks on the vars provided and adjust as needed
 		#example: don't send ic messages to people that aren't in the same location as the speaker
@@ -100,7 +101,7 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 					bg_idx = i
 					break
 		for client in backgrounds.get_bg(bg_idx)["clients"]:
-			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_idx, pos_idx, additive)
+			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre)
 
 	var ooc_name = "Null"
 	if id != 1:
@@ -121,10 +122,14 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 		var emote = characters.get_char_emote(char_idx, emote_index)
 		var flap = null
 		var blink = null
+		var pre_data = null
+		
 		if emote.has("flap"):
 			flap = characters.get_char_flap(char_idx, emote["flap"])
 		if emote.has("blink"):
 			blink = characters.get_char_blink(char_idx, emote["blink"])
+		if emote.has("pre"):
+			pre_data = characters.get_char_pre(char_idx, emote["pre"])
 		
 		if emote:
 			var frames = [0]
@@ -133,15 +138,8 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 			var columns = 1
 			var loop = false
 			var effects = []
-			if emote.has("frames"):
-				frames = emote["frames"]
-				delay = emote["delay"]
-				rows = emote["rows"]
-				columns = emote["columns"]
-				loop = emote["loop"]
-				effects = emote["effects"]
-				
-			emit_signal("ic_character", emote, emote["file"], frames, delay, rows, columns, loop, effects, flap, blink)
+			
+			emit_signal("ic_character", emote, flap, blink, pre_data, pre)
 		else:
 			emit_signal("ic_character", characters.missing, false)
 
@@ -164,6 +162,7 @@ func _on_character_changed(idx):
 
 func _on_emote_selected(index):
 	current_emote = index
+	
 
 func _on_song_selected(song):
 	if not get_tree().is_network_server():
@@ -199,3 +198,6 @@ func _on_Location_set_background(bg_idx):
 
 func _on_Options_additive_text(toggle):
 	additive_text = toggle
+
+func _on_Options_pre_animation(toggle):
+	play_pre = toggle
