@@ -3,6 +3,7 @@ extends HBoxContainer
 signal color_changed(color)
 signal additive_text(toggle)
 signal pre_animation(toggle)
+signal flip(toggle)
 
 onready var additive_button: CheckBox = $AdditiveButton as CheckBox
 onready var option_button: OptionButton = $OptionButton as OptionButton
@@ -40,3 +41,6 @@ func _on_Toggle_pre():
 func _on_Pre_off():
 	$PreButton.pressed = false
 	emit_signal("pre_animation", false)
+
+func _on_Flip_toggled(button_pressed):
+	emit_signal("flip", button_pressed)

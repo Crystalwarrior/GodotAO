@@ -70,6 +70,23 @@ func get_char_blink(char_idx: int, blinkname):
 		if blink["name"] == blinkname:
 			return blink
 	return null
+	
+func get_char_pre(char_idx: int, prename):
+	if list.empty() or char_idx > list.size():
+		return null
+	var character = get_char(char_idx)
+	if not character:
+		return null
+	if character["pre_animations"].empty():
+		return null
+	for pre in character["pre_animations"]:
+		if pre["name"] == prename:
+			return pre
+	return null
+	
+#func check_pre(emotes, emote_idx):
+#	for emote in emotes:
+		
 
 func load_characters(path):
 	list.clear()
@@ -104,6 +121,8 @@ func load_character_json(path):
 		_image_convert_and_cache(data, "flaps", ["file"], path)
 	if data.has("blinks"):
 		_image_convert_and_cache(data, "blinks", ["file"], path)
+	if data.has("pre_animations"):
+		_image_convert_and_cache(data, "pre_animations", ["file"], path)
 	return data
 	
 func _image_convert_and_cache(data, objects, check_list, path):

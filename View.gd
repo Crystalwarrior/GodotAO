@@ -44,6 +44,7 @@ var blinkWaitTimer = 0.0
 var emoteHolder = []
 var pre = false
 var play_pre = false
+var flip = false
 
 func _ready():
 	characterTexture.storage = ImageTexture.STORAGE_COMPRESS_LOSSLESS
@@ -111,14 +112,16 @@ func _process(delta):
 func _toggle_Pre(status):
 	play_pre = status
 
-func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre):
+func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre, set_flip):
 	if pre_data != null and play_pre == true:
-			emoteHolder = [emote, flap_data, blink_data]
-			emote = pre_data
-			pre = true
-			emit_signal("toggle_pre", true)
+		emoteHolder = [emote, flap_data, blink_data]
+		emote = pre_data
+		pre = true
+		emit_signal("toggle_pre", true)
 	else:
 		emit_signal("toggle_pre", false)
+	flip = set_flip
+	character.set_flip_h(flip)
 	if current_emote != emote:
 		if emote.has("flap"):
 			characterImage = emote["file"].get_data()
@@ -267,7 +270,7 @@ func _set_loop(object):
 		if object.name == "character" and pre == true:
 			pre = false
 #			emit_signal("toggle_pre", false)
-			_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null, false)
+			_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null, false, flip)
 		if object.current_loop == true and object.played == true:
 			object.frame_counter = 0
 			object.cycle_number = 0
