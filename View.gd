@@ -128,6 +128,7 @@ func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre, set
 			characterImage = emote["file"].get_data()
 			characterBaseImage = emote["file"].get_data()
 			character.texture = characterTexture
+			characterTexture.create_from_image(characterImage, 0)
 		else:
 			character.texture = emote["file"]
 		current_emote = emote
