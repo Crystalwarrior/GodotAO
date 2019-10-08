@@ -318,12 +318,11 @@ margin_bottom = -5.0
 
 [node name="Tree" type="Tree" parent="PanelContainer/MainWindow/MainView/Left/Info2/Music"]
 margin_right = 324.0
-margin_bottom = 325.0
+margin_bottom = 297.0
 size_flags_vertical = 3
 script = ExtResource( 16 )
 
 [node name="URLBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Music"]
-visible = false
 margin_top = 301.0
 margin_right = 324.0
 margin_bottom = 325.0
@@ -353,7 +352,6 @@ margin_bottom = -5.0
 script = ExtResource( 18 )
 
 [node name="VolumeBlips" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-editor/display_folded = true
 margin_right = 324.0
 margin_bottom = 16.0
 alignment = 2
@@ -375,11 +373,13 @@ margin_left = 108.0
 margin_right = 324.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 216, 0 )
+focus_mode = 0
 max_value = 1.0
 step = 0.001
 value = 1.0
 tick_count = 11
 ticks_on_borders = true
+focus_mode = 0
 
 [node name="VolumeSFX" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
 editor/display_folded = true
@@ -639,7 +639,7 @@ rect_min_size = Vector2( 0, 30 )
 scroll_vertical_enabled = false
 
 [node name="Options" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer"]
-margin_right = 272.0
+margin_right = 414.0
 margin_bottom = 24.0
 rect_clip_content = true
 script = ExtResource( 23 )
@@ -654,24 +654,32 @@ text = "Additive"
 
 [node name="PreButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
 margin_left = 85.0
-margin_right = 134.0
+margin_right = 166.0
 margin_bottom = 24.0
 hint_tooltip = "Play pre animation"
 focus_mode = 0
 enabled_focus_mode = 0
-text = "Pre"
+text = "Preanim"
+
+[node name="NoInterruptButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_left = 170.0
+margin_right = 276.0
+margin_bottom = 24.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "No interrupt"
 
 [node name="FlipButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
-margin_left = 138.0
-margin_right = 189.0
+margin_left = 280.0
+margin_right = 331.0
 margin_bottom = 24.0
 focus_mode = 0
 enabled_focus_mode = 0
 text = "Flip"
 
 [node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
-margin_left = 193.0
-margin_right = 272.0
+margin_left = 335.0
+margin_right = 414.0
 margin_bottom = 24.0
 hint_tooltip = "Set the default color of your text
 (note: \"Logs\" only recognizes color codes (such as \\w or \\c3), otherwise text will remain white."
@@ -726,9 +734,11 @@ script = ExtResource( 25 )
 [connection signal="additive_text" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_additive_text"]
 [connection signal="color_changed" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Options_color_changed"]
 [connection signal="flip" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_flip"]
+[connection signal="no_interrupt" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_no_interrupt"]
 [connection signal="pre_animation" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_pre_animation"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/AdditiveButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_AdditiveButton_toggled"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/PreButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_toggled"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/NoInterruptButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_NoInterruptButton_toggled"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/FlipButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Flip_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]

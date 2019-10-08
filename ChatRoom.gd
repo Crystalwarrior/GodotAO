@@ -9,6 +9,7 @@ var current_pos = 0
 var additive_text = false
 var play_pre = false
 var flipit = false
+var no_interrupt = false
 var last_speaker = -1
 
 signal ooc_message(msg)
@@ -84,12 +85,12 @@ func send_ic_message(msg, color: Color = ColorN("white")):
 	var id = get_tree().get_network_unique_id()
 	if not get_tree().is_network_server():
 		rpc_id(1, "receive_ic_message", id, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, current_bg, current_pos, additive_text, play_pre, flipit)
+			 current_emote, current_bg, current_pos, additive_text, play_pre, flipit, no_interrupt)
 	else:
 		receive_ic_message(1, msg, color, characters.get_char(character_index)["name"],
-			 current_emote, current_bg, current_pos, additive_text, play_pre, flipit)
+			 current_emote, current_bg, current_pos, additive_text, play_pre, flipit, no_interrupt)
 
-remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre, flip):
+remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre, flip, interrupt):
 	if get_tree().is_network_server():
 		#do various checks on the vars provided and adjust as needed
 		#example: don't send ic messages to people that aren't in the same location as the speaker
@@ -102,7 +103,7 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 					bg_idx = i
 					break
 		for client in backgrounds.get_bg(bg_idx)["clients"]:
-			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre, flip)
+			rpc_id(client, "receive_ic_message", id, msg, color, charname, emote_index, bg_idx, pos_idx, additive, pre, flip, interrupt)
 
 	var ooc_name = "Null"
 	if id != 1:
@@ -133,9 +134,9 @@ remote func receive_ic_message(id, msg, color, charname, emote_index, bg_idx, po
 			pre_data = characters.get_char_pre(char_idx, emote["pre"])
 
 		if emote:
-			emit_signal("ic_character", emote, flap, blink, pre_data, pre, flip)
+			emit_signal("ic_character", emote, flap, blink, pre_data, pre, flip, interrupt)
 		else:
-			emit_signal("ic_character", characters.missing, null, null, null, false, false)
+			emit_signal("ic_character", characters.missing, null, null, null, false, false, false)
 
 	emit_signal("ic_name", showname)
 	emit_signal("ic_logs", "[b]%s (%s)[/b]: %s" % [showname, ooc_name, text_parser.parse_markup(msg)])
@@ -198,3 +199,6 @@ func _on_Options_pre_animation(toggle):
 
 func _on_Options_flip(toggle):
 	flipit = toggle
+
+func _on_Options_no_interrupt(toggle):
+	no_interrupt = toggle

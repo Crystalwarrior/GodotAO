@@ -4,6 +4,7 @@ signal color_changed(color)
 signal additive_text(toggle)
 signal pre_animation(toggle)
 signal flip(toggle)
+signal no_interrupt(toggle)
 
 onready var additive_button: CheckBox = $AdditiveButton as CheckBox
 onready var option_button: OptionButton = $OptionButton as OptionButton
@@ -44,3 +45,7 @@ func _on_Pre_off():
 
 func _on_Flip_toggled(button_pressed):
 	emit_signal("flip", button_pressed)
+
+
+func _on_NoInterruptButton_toggled(button_pressed):
+	emit_signal("no_interrupt", button_pressed)

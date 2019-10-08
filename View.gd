@@ -112,12 +112,13 @@ func _process(delta):
 func _toggle_Pre(status):
 	play_pre = status
 
-func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre, set_flip):
+func _on_Main_ic_character(emote, flap_data, blink_data, pre_data, play_pre, set_flip, interrupt):
 	if pre_data != null and play_pre == true:
 		emoteHolder = [emote, flap_data, blink_data]
 		emote = pre_data
 		pre = true
-		emit_signal("toggle_pre", true)
+		if interrupt == false:
+			emit_signal("toggle_pre", true)
 	else:
 		emit_signal("toggle_pre", false)
 	flip = set_flip
@@ -238,7 +239,7 @@ func _on_Say_flap(vis, frame):
 func _anim(object):
 	# Check if the current frame declared as a string
 	if typeof(object.current_frames[frame_counter]) == 4:
-		if object.cycle_number == 0 && object.played == false:
+		if object.cycle_number == 0 and object.played == false:
 			object.current_frame =  int(object.current_frames[object.frame_counter].split("-")[0])
 			object.cycle_number = int(object.current_frames[object.frame_counter].split("-")[1]) - int(object.current_frames[object.frame_counter].split("-")[0])
 			object.played = true
@@ -269,8 +270,7 @@ func _set_loop(object):
 	if object.frame_counter == object.current_frames.size()-1 and object.cycle_number == 0:
 		if object.name == "character" and pre == true:
 			pre = false
-#			emit_signal("toggle_pre", false)
-			_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null, false, flip)
+			_on_Main_ic_character(emoteHolder[0], emoteHolder[1], emoteHolder[2], null, false, flip, false)
 		if object.current_loop == true and object.played == true:
 			object.frame_counter = 0
 			object.cycle_number = 0
