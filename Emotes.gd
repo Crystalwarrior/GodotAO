@@ -2,7 +2,8 @@ extends ItemList
 
 var emotes = []
 signal emote_selected(index)
-signal toggle_pre(status)
+signal toggle_pre()
+signal off_pre()
 
 func _ready():
 	pass
@@ -20,3 +21,5 @@ func _on_item_selected(index):
 	emit_signal("emote_selected", index)
 	if emotes[index].has("pre") == true:
 		emit_signal("toggle_pre")
+	else:
+		emit_signal("off_pre")
