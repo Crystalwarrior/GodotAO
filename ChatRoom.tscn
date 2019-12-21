@@ -699,7 +699,6 @@ same_column_width = true
 icon_mode = 0
 fixed_icon_size = Vector2( 64, 64 )
 script = ExtResource( 25 )
-
 [connection signal="character_changed" from="." to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_Main_character_changed"]
 [connection signal="clients_changed" from="." to="PanelContainer/MainWindow/MainView/Left/Info/Players" method="_on_Main_clients_changed"]
 [connection signal="ic_background" from="." to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Main_ic_background"]
@@ -741,7 +740,7 @@ script = ExtResource( 25 )
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/NoInterruptButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_NoInterruptButton_toggled"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/FlipButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Flip_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
-[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
+[connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]
 [connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Toggle_pre"]

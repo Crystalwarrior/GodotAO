@@ -58,6 +58,11 @@ func _process(delta):
 			text.visible_characters += 1
 			timer = 0
 
+			if letter in [".", ",", "?", "!", ";"]:
+   				timer = 0-settings.text_speed/3
+			else:
+   				timer = 0
+
 func _on_Input_text_entered(new_text):
 	emit_signal("message_sent", new_text, color)
 	emit_signal("pre_off")
