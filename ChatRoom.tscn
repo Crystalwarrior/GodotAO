@@ -524,7 +524,7 @@ stretch_mode = 7
 
 [node name="character" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 position = Vector2( 319, 241 )
-scale = Vector2( 2.5, 2.5 )
+scale = Vector2( 1e-005, 1e-005 )
 region_rect = Rect2( 0, 0, 10, 10 )
 script = ExtResource( 20 )
 
@@ -743,4 +743,5 @@ script = ExtResource( 25 )
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]
+[connection signal="off_pre" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_off"]
 [connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Toggle_pre"]
