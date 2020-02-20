@@ -45,6 +45,49 @@ func get_char_emote(char_idx: int, emote_idx: int):
 		return null
 	return character["emotes"][emote_idx]
 
+func get_char_flap(char_idx: int, flapname):
+	if list.empty() or char_idx > list.size():
+		return null
+	var character = get_char(char_idx)
+	if not character:
+		return null
+	if character["flaps"].empty():
+		return null
+	for flap in character["flaps"]:
+		if flap["name"] == flapname:
+			return flap
+	return null
+
+func get_char_blink(char_idx: int, blinkname):
+	if list.empty() or char_idx > list.size():
+		return null
+	var character = get_char(char_idx)
+	if not character:
+		return null
+	if character["blinks"].empty():
+		return null
+	for blink in character["blinks"]:
+		if blink["name"] == blinkname:
+			return blink
+	return null
+	
+func get_char_pre(char_idx: int, prename):
+	if list.empty() or char_idx > list.size():
+		return null
+	var character = get_char(char_idx)
+	if not character:
+		return null
+	if character["pre_animations"].empty():
+		return null
+	for pre in character["pre_animations"]:
+		if pre["name"] == prename:
+			return pre
+	return null
+	
+#func check_pre(emotes, emote_idx):
+#	for emote in emotes:
+		
+
 func load_characters(path):
 	list.clear()
 	var dir = Directory.new()
@@ -73,10 +116,20 @@ func load_character_json(path):
 	var data = data_parse.result
 	if not data.has("emotes"):
 		return
-	for emote in data["emotes"]:
-		for entry in emote.keys():
-			if entry in ["file", "icon", "flap"]: #convert it to image from file path
-				var file_path = path.left(path.find_last("/")+1) + emote[entry]
+	_image_convert_and_cache(data, "emotes", ["file", "icon", "flapfile", "blinkfile"], path)
+	if data.has("flaps"):
+		_image_convert_and_cache(data, "flaps", ["file"], path)
+	if data.has("blinks"):
+		_image_convert_and_cache(data, "blinks", ["file"], path)
+	if data.has("pre_animations"):
+		_image_convert_and_cache(data, "pre_animations", ["file"], path)
+	return data
+	
+func _image_convert_and_cache(data, objects, check_list, path):
+	for object in data[objects]:
+		for entry in object.keys():
+			if entry in check_list:
+				var file_path = path.left(path.find_last("/")+1) + object[entry]
 				var texture: Resource
 				if cache.has(file_path):
 					texture = cache.get(file_path)
@@ -86,5 +139,4 @@ func load_character_json(path):
 						cache.add(file_path, texture)
 					else:
 						texture = null
-				emote[entry] = texture
-	return data
+				object[entry] = texture

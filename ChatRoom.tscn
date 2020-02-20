@@ -19,7 +19,7 @@
 [ext_resource path="res://URLBox.gd" type="Script" id=17]
 [ext_resource path="res://Settings.gd" type="Script" id=18]
 [ext_resource path="res://View.gd" type="Script" id=19]
-[ext_resource path="res://Celestia_1.png" type="Texture" id=20]
+[ext_resource path="res://Sprite.gd" type="Script" id=20]
 [ext_resource path="res://Say.gd" type="Script" id=21]
 [ext_resource path="res://res/sounds/blip-female.wav" type="AudioStream" id=22]
 [ext_resource path="res://Options.gd" type="Script" id=23]
@@ -128,7 +128,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="Left" type="VSplitContainer" parent="PanelContainer/MainWindow/MainView"]
-editor/display_folded = true
 margin_right = 334.0
 margin_bottom = 730.0
 size_flags_horizontal = 3
@@ -145,7 +144,6 @@ drag_to_rearrange_enabled = true
 script = ExtResource( 7 )
 
 [node name="Players" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info"]
-editor/display_folded = true
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_left = 5.0
@@ -320,12 +318,11 @@ margin_bottom = -5.0
 
 [node name="Tree" type="Tree" parent="PanelContainer/MainWindow/MainView/Left/Info2/Music"]
 margin_right = 324.0
-margin_bottom = 325.0
+margin_bottom = 297.0
 size_flags_vertical = 3
 script = ExtResource( 16 )
 
 [node name="URLBox" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Music"]
-visible = false
 margin_top = 301.0
 margin_right = 324.0
 margin_bottom = 325.0
@@ -355,7 +352,6 @@ margin_bottom = -5.0
 script = ExtResource( 18 )
 
 [node name="VolumeBlips" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
-editor/display_folded = true
 margin_right = 324.0
 margin_bottom = 16.0
 alignment = 2
@@ -377,11 +373,13 @@ margin_left = 108.0
 margin_right = 324.0
 margin_bottom = 16.0
 rect_min_size = Vector2( 216, 0 )
+focus_mode = 0
 max_value = 1.0
 step = 0.001
 value = 1.0
 tick_count = 11
 ticks_on_borders = true
+focus_mode = 0
 
 [node name="VolumeSFX" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Left/Info2/Settings"]
 editor/display_folded = true
@@ -517,20 +515,34 @@ script = ExtResource( 19 )
 [node name="bg" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = -0.131042
+margin_top = 0.262054
+margin_right = -0.131042
+margin_bottom = 0.262054
 expand = true
 stretch_mode = 7
 
-[node name="character" type="TextureRect" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-expand = true
-stretch_mode = 6
+[node name="character" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+position = Vector2( 319, 241 )
+scale = Vector2( 2.5, 2.5 )
+region_rect = Rect2( 0, 0, 10, 10 )
+script = ExtResource( 20 )
 
-[node name="flap" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
-texture = ExtResource( 20 )
+[node name="flap" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View/character"]
+visible = false
+position = Vector2( 36.91, -89.455 )
 centered = false
-vframes = 3
-hframes = 3
+script = ExtResource( 20 )
+
+[node name="blink" type="Sprite" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View/character"]
+visible = false
+position = Vector2( 36.68, 0 )
+script = ExtResource( 20 )
+
+[node name="Label" type="Label" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC/View"]
+visible = false
+margin_right = 40.0
+margin_bottom = 14.0
 
 [node name="Say" type="VBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info3/IC"]
 margin_left = 7.0
@@ -602,7 +614,6 @@ volume_db = -10.0
 bus = "Blips"
 
 [node name="Info4" type="TabContainer" parent="PanelContainer/MainWindow/MainView/Right"]
-editor/display_folded = true
 margin_top = 540.0
 margin_right = 664.0
 margin_bottom = 730.0
@@ -628,7 +639,7 @@ rect_min_size = Vector2( 0, 30 )
 scroll_vertical_enabled = false
 
 [node name="Options" type="HBoxContainer" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer"]
-margin_right = 164.0
+margin_right = 414.0
 margin_bottom = 24.0
 rect_clip_content = true
 script = ExtResource( 23 )
@@ -637,14 +648,43 @@ script = ExtResource( 23 )
 margin_right = 81.0
 margin_bottom = 24.0
 hint_tooltip = "Add text on top of your previously written dialogue"
+focus_mode = 0
+enabled_focus_mode = 0
 text = "Additive"
 
-[node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+[node name="PreButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
 margin_left = 85.0
-margin_right = 164.0
+margin_right = 166.0
+margin_bottom = 24.0
+hint_tooltip = "Play pre animation"
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Preanim"
+
+[node name="NoInterruptButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_left = 170.0
+margin_right = 276.0
+margin_bottom = 24.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "No interrupt"
+
+[node name="FlipButton" type="CheckBox" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_left = 280.0
+margin_right = 331.0
+margin_bottom = 24.0
+focus_mode = 0
+enabled_focus_mode = 0
+text = "Flip"
+
+[node name="OptionButton" type="OptionButton" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options"]
+margin_left = 335.0
+margin_right = 414.0
 margin_bottom = 24.0
 hint_tooltip = "Set the default color of your text
 (note: \"Logs\" only recognizes color codes (such as \\w or \\c3), otherwise text will remain white."
+focus_mode = 0
+enabled_focus_mode = 0
 text = "White"
 
 [node name="Emotes" type="ItemList" parent="PanelContainer/MainWindow/MainView/Right/Info4/Emotes"]
@@ -653,6 +693,7 @@ margin_right = 654.0
 margin_bottom = 156.0
 size_flags_vertical = 3
 items = [ "Emote", ExtResource( 24 ), false, "Item 1", ExtResource( 24 ), false, "Item 2", ExtResource( 24 ), false, "Item 3", ExtResource( 24 ), false, "Item 4", ExtResource( 24 ), false, "Item 5", ExtResource( 24 ), false, "Item 6", ExtResource( 24 ), false, "Item 7", ExtResource( 24 ), false, "Item 8", ExtResource( 24 ), false, "Item 9", ExtResource( 24 ), false, "Item 10", ExtResource( 24 ), false, "Item 11", ExtResource( 24 ), false, "Item 12", ExtResource( 24 ), false, "Item 13", ExtResource( 24 ), false, "Item 14", ExtResource( 24 ), false ]
+allow_reselect = true
 max_columns = 16
 same_column_width = true
 icon_mode = 0
@@ -684,13 +725,22 @@ script = ExtResource( 25 )
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeSFX/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_SFX_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/VolumeMusic/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_Music_value_changed"]
 [connection signal="value_changed" from="PanelContainer/MainWindow/MainView/Left/Info2/Settings/TextSpeed/Slider" to="PanelContainer/MainWindow/MainView/Left/Info2/Settings" method="_on_TextSpeed_value_changed"]
+[connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Toggle_pre"]
 [connection signal="flap" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/View" method="_on_Say_flap"]
 [connection signal="message_sent" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="." method="send_ic_message"]
+[connection signal="pre_off" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_off"]
 [connection signal="text_entered" from="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say/Input" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Input_text_entered"]
 [connection signal="additive_text" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_additive_text"]
 [connection signal="color_changed" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_Options_color_changed"]
+[connection signal="flip" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_flip"]
+[connection signal="no_interrupt" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_no_interrupt"]
+[connection signal="pre_animation" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" to="." method="_on_Options_pre_animation"]
 [connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/AdditiveButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_AdditiveButton_toggled"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/PreButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Pre_toggled"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/NoInterruptButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_NoInterruptButton_toggled"]
+[connection signal="toggled" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/FlipButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Flip_toggled"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options/OptionButton" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_OptionButton_item_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="." method="_on_emote_selected"]
 [connection signal="emote_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info3/IC/Say" method="_on_emote_selected"]
 [connection signal="item_selected" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" method="_on_item_selected"]
+[connection signal="toggle_pre" from="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/Emotes" to="PanelContainer/MainWindow/MainView/Right/Info4/Emotes/ScrollContainer/Options" method="_on_Toggle_pre"]
