@@ -55,8 +55,12 @@ func _process(delta):
 				flap.flap = false
 			if text.text and letter != " ":
 				blip.play()
+
 			text.visible_characters += 1
-			timer = 0
+			if letter in [".", ",", "?", "!", ";"]:
+				timer = 0-settings.text_speed/3
+			else:
+				timer = 0
 
 			if letter in [".", ",", "?", "!", ";"]:
    				timer = 0-settings.text_speed/3
